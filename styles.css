@@ -29,7 +29,7 @@ p{
 	white-space:nowrap;
 }
 td{
-	padding-right:2rem;
+	padding-right:1rem;
 }
 @keyframes blinker{
 	50%{
@@ -54,6 +54,7 @@ td{
 }
 .command{
 	color:#73ABAD;
+	cursor:pointer;
 	text-shadow:0 0 5px #73ABAD;
 }
 .feedback{
