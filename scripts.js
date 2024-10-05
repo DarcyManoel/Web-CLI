@@ -9,10 +9,12 @@ function submitCommand(key){
 	terminalUpdate(1,key)
 	const FEEDBACK_LOST=`<p><span class="feedback-lost">Command not found. For a list of commands, type <span class="command" onclick="COMMANDS.help.function(this.innerHTML)">'help'</span>.</p>`
 	COMMANDS[key]
-		?COMMANDS[key].function
-			?COMMANDS[key].function()
-			:terminalUpdate(0,FEEDBACK_LOST)
-		:terminalUpdate(0,FEEDBACK_LOST)}
+		?COMMANDS[key].function()
+		:COMMANDS[commandsDirectory]
+			?COMMANDS[commandsDirectory].children[key]
+				?COMMANDS[commandsDirectory].children[key].function()
+				:terminalUpdate(0,FEEDBACK_LOST)
+			:terminalUpdate(0,FEEDBACK_LOST)}
 function terminalUpdate(isCommand,content){
 	isCommand
 		?TERMINAL.innerHTML+=`<p><span class='command-irrelevance'>user:</span> ${content}`

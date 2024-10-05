@@ -1,15 +1,27 @@
 const COMMANDS={}
 let commandsDirectory=``
 COMMANDS.help={
-	description:`Lists all available commands at the active directory.`,
+	description:`Lists all available commands.`,
 	function:(function(){
 		let contentQueue=`<table class="feedback">`
-		for(const[key,value]of Object.entries(COMMANDS)){
-			contentQueue+=`<tr><td class="command" onclick="terminalUpdate(1,this.innerHTML),COMMANDS[this.innerHTML].function()">${key}</td><td>${value.description}</td></tr>`
+		for(const[key1,value1]of Object.entries(COMMANDS)){
+			contentQueue+=`<tr><td class="command">${COMMANDS[key1].children?key1==commandsDirectory?`&dharl;`:`&rhard;`:``}</td><td class="command" onclick="terminalUpdate(1,this.innerHTML);COMMANDS[this.innerHTML].function()">${key1}</td><td>${value1.description}</td></tr>`
+			if(key1==commandsDirectory)
+				for(const[key2,value2] of Object.entries(COMMANDS[key1].children))
+					contentQueue+=`<tr class="command-nested"><td></td><td class="command" onclick="terminalUpdate(1,this.innerHTML);COMMANDS['${commandsDirectory}'].children[this.innerHTML].function()">${key2}</td><td>${value2.description}</td></tr>`
 		}
 		contentQueue+=`</table>`
 		terminalUpdate(0,contentQueue)})}
-COMMANDS.upload={
+COMMANDS.data={
+	description:`Enters the data directory. Handles the upload and download of active data.`,
+	function:function(){
+		commandsDirectory=`data`
+		terminalUpdate(0,`<p class="feedback">Entered the data directory.</p>`)
+		terminalUpdate(0,`<p class="feedback">Printing updated help table...</p>`)
+		COMMANDS.help.function()},
+	children:{}
+}
+COMMANDS.data.children.upload={
 	description:`Upload a memory file for data use.`,
 	function:function(){
 		terminalUpdate(0,`<p class="feedback">File upload initiated...</p>`)
@@ -30,7 +42,7 @@ COMMANDS.upload={
 				document.body.removeChild(fileInput)}})
 		document.body.appendChild(fileInput)
 		fileInput.click()}}
-COMMANDS.download={
+COMMANDS.data.children.download={
 	description:`Download a memory file for data storage.`,
 	function:function(){
 		if(!Object.keys(data).length){
