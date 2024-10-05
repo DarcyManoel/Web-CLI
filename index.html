@@ -7,12 +7,11 @@
 	</head>
 	<body>
 		<div id="terminal"></div>
-		<div id="command-line">
-			<div id="command">
-				<input id="input" autofocus onblur="this.focus()" oninput="INPUT_REFLECTION.innerHTML=value;window.scrollTo(0,document.body.scrollHeight)" onchange="submitCommand(this.value)"></input>
-				<span id="input-reflection"></span>
-				<b id="cursor" style="left:0;">█</b>
-			</div>
+		<div id="command">
+			<div id="command-prefix" class="command-irrelevance">user @ root:</div>
+			<input id="input" autofocus onblur="this.focus()" oninput="INPUT_REFLECTION.innerHTML=value;window.scrollTo(0,document.body.scrollHeight)" onchange="submitCommand(this.value)"></input>
+			<span id="input-reflection" style="color:#73ABAD;"></span>
+			<b id="cursor">█</b>
 		</div>
 	</body>
 	<script type="text/javascript" src="commands.js"></script>

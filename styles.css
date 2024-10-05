@@ -57,6 +57,9 @@ td{
 	cursor:pointer;
 	text-shadow:0 0 5px #73ABAD;
 }
+.command-irrelevance{
+	opacity:.5;
+}
 .feedback{
 	color:#B89076;
 	margin:1em;
@@ -67,19 +70,13 @@ td{
 .feedback-lost{
 	color:#9C8394;
 }
-#command-line{
-	color:#73ABAD;
-	cursor:text;
-}
 #command{
 	animation:show 0.5s ease forwards;
+	cursor:text;
+	display:flex;
+	gap:.4rem;
 	line-height:1.3rem;
-	margin-top:-2px;
 	opacity:0;
-}
-#command::before{
-	color:#519975;
-	content:'user:';
 }
 #cursor{
 	animation:blinker 1s linear infinite;
@@ -89,7 +86,7 @@ td{
 	font-size:.75rem;
 	height:1.5em;
 	overflow:hidden;
-	transform:translate(-3px,4px);
+	transform:translate(-.3rem,.1rem);
 }
 #input{
 	opacity:0;

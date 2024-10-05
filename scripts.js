@@ -4,7 +4,8 @@ const TERMINAL=document.getElementById(`terminal`)
 function submitCommand(value){
 	INPUT.value=``
 	INPUT_REFLECTION.innerHTML=``
-	terminalUpdate(`<p>user: ${value}`)
+	document.getElementById(`command-prefix`).innerHTML=`user @ ${commandsDirectory}:`
+	terminalUpdate(`<p><span class="command-irrelevance">user @ ${commandsDirectory}:</span> ${value}`)
 	const FEEDBACK_LOST=`<p><span class="feedback-lost">Command not found. For a list of commands, type <span class="command" onclick="runCommandFromKey(1,this.innerHTML)">'help'</span>.</p>`
 	COMMANDS[commandsDirectory][value]
 		?runCommandFromKey(0,value)
