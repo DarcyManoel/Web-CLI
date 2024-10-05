@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="icon" href="icon.svg">
+		<link rel="stylesheet" type="text/css" href="styles.css">
+		<title>Life CLI</title>
+	</head>
+	<body>
+		<div id="terminal"></div>
+		<div id="command-line">
+			<div id="command">
+				<input id="input" autofocus onblur="this.focus()" oninput="INPUT_REFLECTION.innerHTML=value" onchange="submitCommand(this.value);window.scrollTo(0,document.body.scrollHeight)"></input>
+				<span id="input-reflection"></span>
+				<b id="cursor" style="left:0;">█</b>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="scripts.js"></script>
+</html>
