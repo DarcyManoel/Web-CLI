@@ -22,10 +22,13 @@ div{
 	display:block;
 	unicode-bidi:isolate;
 }
-p{
+p,table{
 	animation:typing .5s steps(30,end);
+	display:block;
+	letter-spacing:.05em;
 	line-height:1.3em;
 	margin:0;
+	overflow:hidden;
 	white-space:nowrap;
 }
 td{
