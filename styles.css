@@ -93,6 +93,14 @@ p{
 	opacity:0;
 	position:absolute;
 }
+#input-suggestion{
+	left:0;
+	opacity:.5;
+	overflow:visible;
+	position:absolute;
+	top:1rem;
+	white-space:nowrap;
+}
 #terminal{
 	cursor:text;
 }

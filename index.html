@@ -10,7 +10,10 @@
 		<div id="command">
 			<div id="command-prefix" class="subtle-element">user:</div>
 			<input id="input" autofocus onblur="this.focus()" oninput="inputCommand(this.value)" onchange="submitCommand(this.value)"></input>
-			<span id="input-reflection" style="color:#73ABAD;"></span>
+			<div style="position:relative;">
+				<span id="input-reflection" style="color:#73ABAD;"></span>
+				<span id="input-suggestion" style="color:#73ABAD;"></span>
+			</div>
 			<b id="blinker">█</b>
 		</div>
 	</body>
