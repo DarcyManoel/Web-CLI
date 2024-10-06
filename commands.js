@@ -5,7 +5,7 @@ COMMANDS.help={
 	function:(function(){
 		let contentQueue=`<table class="feedback">`
 		for(const[key1,value1]of Object.entries(COMMANDS)){
-			contentQueue+=`<tr><td class="command">${COMMANDS[key1].children?key1==commandsDirectory?`&dharl;`:`&rhard;`:``}</td><td class="command" onclick="terminalUpdate(1,this.innerHTML);COMMANDS[this.innerHTML].function()">${key1}</td><td>${value1.description}</td></tr>`
+			contentQueue+=`<tr><td ${COMMANDS[key1].children?key1==commandsDirectory?`class="command">&dharl;`:`class="command subtle-element">&rhard;`:``}</td><td class="command" onclick="terminalUpdate(1,this.innerHTML);COMMANDS[this.innerHTML].function()">${key1}</td><td>${value1.description}</td></tr>`
 			if(key1==commandsDirectory)
 				for(const[key2,value2] of Object.entries(COMMANDS[key1].children))
 					contentQueue+=`<tr class="command-nested"><td></td><td class="command" onclick="terminalUpdate(1,this.innerHTML);COMMANDS['${commandsDirectory}'].children[this.innerHTML].function()">${key2}</td><td>${value2.description}</td></tr>`

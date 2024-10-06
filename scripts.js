@@ -17,6 +17,6 @@ function submitCommand(key){
 			:terminalUpdate(0,FEEDBACK_LOST)}
 function terminalUpdate(isCommand,content){
 	isCommand
-		?TERMINAL.insertAdjacentHTML(`beforeend`,`<p><span class='command-irrelevance'>user:</span> ${content}`)
+		?TERMINAL.insertAdjacentHTML(`beforeend`,`<p><span class='subtle-element'>user:</span> ${content}`)
 		:TERMINAL.insertAdjacentHTML(`beforeend`,content)
 	window.scrollTo(0,document.body.scrollHeight)}

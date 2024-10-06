@@ -63,7 +63,7 @@ td:first-child{
 	cursor:pointer;
 	text-shadow:0 0 5px #73ABAD;
 }
-.command-irrelevance{
+.subtle-element{
 	opacity:.5;
 }
 .command-nested td:not(:first-child){
