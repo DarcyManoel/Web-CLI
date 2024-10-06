@@ -1,3 +1,4 @@
+let data={}
 const COMMANDS={}
 let commandsDirectory=``
 COMMANDS.help={
@@ -19,8 +20,7 @@ COMMANDS.data={
 		terminalUpdate(0,`<p class="feedback">Entered the data directory.</p>`)
 		terminalUpdate(0,`<p class="feedback">Printing updated help table...</p>`)
 		COMMANDS.help.function()},
-	children:{}
-}
+	children:{}}
 COMMANDS.data.children.upload={
 	description:`Upload a memory file for data use.`,
 	function:function(){

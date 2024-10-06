@@ -1,7 +1,6 @@
 const INPUT=document.getElementById(`input`)
 const INPUT_REFLECTION=document.getElementById(`input-reflection`)
 const TERMINAL=document.getElementById(`terminal`)
-let data={}
 terminalUpdate(0,`<p class="feedback-landing">Welcome to this interactive web terminal.</p>`)
 terminalUpdate(0,`<p class="feedback-landing">For a list of available commands, type <span class="command" onclick="terminalUpdate(1,this.innerHTML);COMMANDS.help.function(this.innerHTML)">'help'</span>.</p>`)
 function submitCommand(key){
