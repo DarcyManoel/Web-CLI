@@ -3,6 +3,9 @@ const INPUT_REFLECTION=document.getElementById(`input-reflection`)
 const TERMINAL=document.getElementById(`terminal`)
 terminalUpdate(0,`<p class="feedback-landing">Welcome to this interactive web terminal.</p>`)
 terminalUpdate(0,`<p class="feedback-landing">For a list of available commands, type <span class="command" onclick="terminalUpdate(1,this.innerHTML);COMMANDS.help.function(this.innerHTML)">'help'</span>.</p>`)
+function inputCommand(key){
+	INPUT_REFLECTION.innerHTML=key
+	window.scrollTo(0,document.body.scrollHeight)}
 function submitCommand(key){
 	INPUT.value=``
 	INPUT_REFLECTION.innerHTML=``
