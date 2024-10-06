@@ -2,12 +2,14 @@ const INPUT=document.getElementById(`input`)
 const INPUT_REFLECTION=document.getElementById(`input-reflection`)
 const TERMINAL=document.getElementById(`terminal`)
 let data={}
+terminalUpdate(0,`<p class="feedback-landing">Welcome to this interactive web terminal.</p>`)
+terminalUpdate(0,`<p class="feedback-landing">For a list of available commands, type <span class="command" onclick="terminalUpdate(1,this.innerHTML);COMMANDS.help.function(this.innerHTML)">'help'</span>.</p>`)
 function submitCommand(key){
 	INPUT.value=``
 	INPUT_REFLECTION.innerHTML=``
 	document.getElementById(`command-prefix`).innerHTML=`user:`
 	terminalUpdate(1,key)
-	const FEEDBACK_LOST=`<p><span class="feedback-lost">Command not found. For a list of commands, type <span class="command" onclick="COMMANDS.help.function(this.innerHTML)">'help'</span>.</p>`
+	const FEEDBACK_LOST=`<p><span class="feedback-lost">Command not found. For a list of commands, type <span class="command" onclick="terminalUpdate(1,this.innerHTML);COMMANDS.help.function(this.innerHTML)">'help'</span>.</p>`
 	COMMANDS[key]
 		?COMMANDS[key].function()
 		:COMMANDS[commandsDirectory]

@@ -73,6 +73,9 @@ td:first-child{
 	color:#B89076;
 	margin:1em;
 }
+.feedback-landing{
+	color:#B89076;
+}
 .feedback:has(.feedback-lost){
 	margin:0 !important;
 }
