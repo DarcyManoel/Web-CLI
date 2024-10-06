@@ -22,7 +22,7 @@ div{
 	display:block;
 	unicode-bidi:isolate;
 }
-p,table{
+p{
 	animation:typing .5s steps(30,end);
 	display:block;
 	letter-spacing:.05em;
@@ -30,12 +30,6 @@ p,table{
 	margin:0;
 	overflow:hidden;
 	white-space:nowrap;
-}
-td{
-	padding-right:1rem;
-}
-td:first-child{
-	padding:0;
 }
 @keyframes blinker{
 	50%{
@@ -60,14 +54,10 @@ td:first-child{
 }
 .command{
 	color:#73ABAD;
-	cursor:pointer;
 	text-shadow:0 0 5px #73ABAD;
 }
 .subtle-element{
 	opacity:.5;
-}
-.command-nested td:not(:first-child){
-	padding-left:1rem;
 }
 .feedback{
 	color:#B89076;
@@ -84,13 +74,12 @@ td:first-child{
 }
 #command{
 	animation:show 0.5s ease forwards;
-	cursor:text;
 	display:flex;
 	gap:.4rem;
 	line-height:1.3rem;
 	opacity:0;
 }
-#cursor{
+#blinker{
 	animation:blinker 1s linear infinite;
 	background-color:#73ABAD;
 	color:#73ABAD;
@@ -103,4 +92,7 @@ td:first-child{
 #input{
 	opacity:0;
 	position:absolute;
+}
+#terminal{
+	cursor:text;
 }
