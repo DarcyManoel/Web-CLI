@@ -91,7 +91,7 @@ COMMANDS.help=function(){
 }
 COMMANDS.data={
 	upload:function(){
-		TERMINAL_BACKLOG_FEEDBACK.push(`File upload initiated...`)
+		TERMINAL_BACKLOG_FEEDBACK.push(`File upload initiated.`)
 		const fileInput=Object.assign(document.createElement(`input`),{
 			type:`file`,
 			accept:`.json`,
@@ -101,13 +101,11 @@ COMMANDS.data={
 				reader.onload=(e)=>{
 					data=JSON.parse(e.target.result)
 					console.log(data)
-					TERMINAL_BACKLOG_FEEDBACK.push(`File upload successful.`)
 				}
 				reader.readAsText(e.target.files[0])
 				document.body.removeChild(fileInput)
 			},
 			oncancel:()=>{
-				TERMINAL_BACKLOG_FEEDBACK.push(`File upload aborted, user action.`)
 				document.body.removeChild(fileInput)}
 			}
 		)
@@ -115,21 +113,18 @@ COMMANDS.data={
 		fileInput.click()
 	},
 	download:function(){
-		if(!Object.keys(data).length){
-			TERMINAL_BACKLOG_FEEDBACK.push(`File download aborted, no data.`)
+		const hasData=Object.keys(data).length
+		if(!hasData){
+			TERMINAL_BACKLOG_FEEDBACK.push(`File download blocked, no data to download.`)
 			return
 		}
-		const file=new Blob(
-			[JSON.stringify(data)],
-			{type:`application/json`}
-		)
-		const link=Object.assign(document.createElement(`a`),{
-			href:URL.createObjectURL(file),
-			download:`Life CLI.json`
-		})
+		const file=new Blob([JSON.stringify(data)],{type:`application/json`})
+		const link=document.createElement(`a`)
+		link.href=URL.createObjectURL(file)
+		link.download=`Life CLI.json`
 		link.click()
 		URL.revokeObjectURL(link.href)
-		TERMINAL_BACKLOG_FEEDBACK.push(`File download initialised...`)
+		TERMINAL_BACKLOG_FEEDBACK.push(`File download initialised.`)
 	}
 }
 //	command auto-complete
