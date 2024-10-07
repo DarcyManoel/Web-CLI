@@ -21,6 +21,9 @@ function inputCommand(key){
 	}
 }
 function submitCommand(key){
+	if(INPUT_SUGGESTION.innerHTML.length){
+		key=INPUT_SUGGESTION.innerHTML
+	}
 	INPUT.value=``
 	INPUT_REFLECTION.innerHTML=``
 	INPUT_SUGGESTION.innerHTML=``
