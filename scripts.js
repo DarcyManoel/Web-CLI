@@ -2,9 +2,19 @@ let data={}
 const INPUT=document.getElementById(`input`)
 const INPUT_REFLECTION=document.getElementById(`input-reflection`)
 const INPUT_SUGGESTION=document.getElementById(`input-suggestion`)
-const TERMINAL=document.getElementById(`terminal`)
-terminalUpdate(0,`<p class="feedback-landing">Welcome to this interactive web terminal.</p>`)
 //	input
+function inputKeyDown(key,event){
+	INPUT.setSelectionRange(input.value.length,input.value.length)
+	event=event||window.event
+	switch(event.keyCode){
+		//	enter/return
+		case 13:
+			if(INPUT.value.length){
+				submitCommand(key)
+			}
+			break
+	}
+}
 function inputCommand(key){
 	INPUT_REFLECTION.innerHTML=key
 	window.scrollTo(0,document.body.scrollHeight)
@@ -20,6 +30,7 @@ function inputCommand(key){
 		INPUT_SUGGESTION.innerHTML=``
 	}
 }
+const FEEDBACK_LOST=`<span class="feedback-lost">Command not found. For a list of available commands, type <span class="feedback-command" onclick="submitCommand(this.innerHTML.replace(/'/g,''))">'help'</span>.`
 function submitCommand(key){
 	if(INPUT_SUGGESTION.innerHTML.length){
 		key=INPUT_SUGGESTION.innerHTML
@@ -27,21 +38,9 @@ function submitCommand(key){
 	INPUT.value=``
 	INPUT_REFLECTION.innerHTML=``
 	INPUT_SUGGESTION.innerHTML=``
-	const FEEDBACK_LOST=`<p class="feedback-lost">Command not found. For a list of available commands, type <span class="command" onclick="submitCommand(this.innerHTML)">'help'</span>.</p>`
-	key=key.replace(/'/g,``)
-	terminalUpdate(1,key)
-	if(key==`help`){
-		let i1=0
-		for(const[key1,value1]of Object.entries(HELP)){
-			for(const[key2,value2]of Object.entries(value1)){
-				setTimeout(terminalUpdate,i1*100,0,`<p class="feedback"><span class="command" onclick="submitCommand(this.innerHTML)">'data ${key2}'</span>${value2}</p>`)
-				i1++
-			}
-		}
-		return
-	}
+	TERMINAL_BACKLOG_COMMAND.push(`<span class="subtle-element">user:</span> ${key}`)
 	let command=COMMANDS
-	let keys=key.split(` `)
+	let keys=key.split(`.`)
 	for(let i1=0;i1<keys.length;i1++){
 		if(command[keys[i1]]){
 			if(i1===keys.length-1){
@@ -49,38 +48,50 @@ function submitCommand(key){
 					command[keys[i1]]()
 					return
 				}else{
-					terminalUpdate(0,FEEDBACK_LOST)
+					TERMINAL_BACKLOG_FEEDBACK.push(FEEDBACK_LOST)
 					return
 				}
 			}
 			command=command[keys[i1]]
 		}else{
-			terminalUpdate(0,FEEDBACK_LOST)
+			TERMINAL_BACKLOG_FEEDBACK.push(FEEDBACK_LOST)
 			return
 		}
 	}
 }
 //	output
-function terminalUpdate(isCommand,content){
-	isCommand
-		?TERMINAL.insertAdjacentHTML(`beforeend`,`<p><span class='subtle-element'>user:</span> ${content}`)
-		:TERMINAL.insertAdjacentHTML(`beforeend`,content)
+const TERMINAL=document.getElementById(`terminal`)
+const TERMINAL_BACKLOG_COMMAND=[]
+const TERMINAL_BACKLOG_FEEDBACK=[]
+TERMINAL_BACKLOG_FEEDBACK.push(`<span class="feedback-landing">Welcome to this interactive web terminal.`)
+setInterval(terminalUpdate,100)
+function terminalUpdate(){
+	if(TERMINAL_BACKLOG_COMMAND.length){
+		TERMINAL.insertAdjacentHTML(`beforeend`,`<p class="command">${TERMINAL_BACKLOG_COMMAND[0]}`)
+		TERMINAL_BACKLOG_COMMAND.shift()
+	}
+	if(TERMINAL_BACKLOG_FEEDBACK.length){
+		TERMINAL.insertAdjacentHTML(`beforeend`,`<p>${TERMINAL_BACKLOG_FEEDBACK[0]}`)
+		TERMINAL_BACKLOG_FEEDBACK.shift()
+	}
 	window.scrollTo(0,document.body.scrollHeight)
 }
 //	commands
-//		organise dictionary keys by priority for command suggestions
 const COMMANDS={}
-const HELP={}
-COMMANDS.data={
-	help:function(){
-		let i1=0
-		for(const[key,value]of Object.entries(HELP.data)){
-			setTimeout(terminalUpdate,i1*100,0,`<p class="feedback"><span class="command" onclick="submitCommand(this.innerHTML)">'data ${key}'</span>${value}</p>`)
-			i1++
+COMMANDS.help=function(){
+	for(const[key1,value1]of Object.entries(COMMANDS)){
+		if(typeof value1===`function`){
+			TERMINAL_BACKLOG_FEEDBACK.push(`<span class="feedback-command" onclick="submitCommand(this.innerHTML.replace(/'/g,''))">'${key1}'`)
+			continue
 		}
-	},
+		for(const[key2,value2]of Object.entries(value1)){
+			TERMINAL_BACKLOG_FEEDBACK.push(`<span class="feedback-command" onclick="submitCommand(this.innerHTML.replace(/'/g,''))">'${key1}.${key2}'`)
+		}
+	}
+}
+COMMANDS.data={
 	upload:function(){
-		terminalUpdate(0,`<p class="feedback">File upload initiated...</p>`)
+		TERMINAL_BACKLOG_FEEDBACK.push(`File upload initiated...`)
 		const fileInput=Object.assign(document.createElement(`input`),{
 			type:`file`,
 			accept:`.json`,
@@ -90,13 +101,13 @@ COMMANDS.data={
 				reader.onload=(e)=>{
 					data=JSON.parse(e.target.result)
 					console.log(data)
-					terminalUpdate(0,`<p class="feedback">File upload successful.</p>`)
+					TERMINAL_BACKLOG_FEEDBACK.push(`File upload successful.`)
 				}
 				reader.readAsText(e.target.files[0])
 				document.body.removeChild(fileInput)
 			},
 			oncancel:()=>{
-				terminalUpdate(0,`<p class="feedback">File upload aborted, user action.</p>`)
+				TERMINAL_BACKLOG_FEEDBACK.push(`File upload aborted, user action.`)
 				document.body.removeChild(fileInput)}
 			}
 		)
@@ -105,7 +116,7 @@ COMMANDS.data={
 	},
 	download:function(){
 		if(!Object.keys(data).length){
-			terminalUpdate(0,`<p class="feedback">File download aborted, no data.</p>`)
+			TERMINAL_BACKLOG_FEEDBACK.push(`File download aborted, no data.`)
 			return
 		}
 		const file=new Blob(
@@ -118,18 +129,14 @@ COMMANDS.data={
 		})
 		link.click()
 		URL.revokeObjectURL(link.href)
-		terminalUpdate(0,`<p class="feedback">File download initialised...</p>`)
+		TERMINAL_BACKLOG_FEEDBACK.push(`File download initialised...`)
 	}
-}
-HELP.data={
-	download:`Download the active state of data for storage.`,
-	upload:`Upload a data save state file for use.`
 }
 //	command auto-complete
 const COMMANDS_SUGGESTIONS=[]
 COMMANDS_SUGGESTIONS.push(`help`)
 for(const[key1,value1]of Object.entries(COMMANDS)){
 	for(const[key2,value2]of Object.entries(value1)){
-		COMMANDS_SUGGESTIONS.push(`${key1} ${key2}`)
+		COMMANDS_SUGGESTIONS.push(`${key1}.${key2}`)
 	}
 }

@@ -9,7 +9,7 @@
 		<div id="terminal"></div>
 		<div id="command">
 			<div id="command-prefix" class="subtle-element">user:</div>
-			<input id="input" autofocus onblur="this.focus()" oninput="inputCommand(this.value)" onchange="submitCommand(this.value)"></input>
+			<input id="input" autofocus onblur="this.focus()" onkeydown="inputKeyDown(this.value,event)" oninput="inputCommand(this.value)"></input>
 			<div style="position:relative;">
 				<span id="input-reflection" style="color:#73ABAD;"></span>
 				<span id="input-suggestion" style="color:#73ABAD;"></span>
