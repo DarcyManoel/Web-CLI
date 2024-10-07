@@ -27,7 +27,6 @@ p{
 	display:block;
 	letter-spacing:.05em;
 	line-height:1.3em;
-	margin:0;
 	overflow:hidden;
 	white-space:nowrap;
 }
@@ -54,6 +53,8 @@ p{
 }
 .command{
 	color:#73ABAD;
+	cursor:pointer;
+	padding-right:1rem;
 	text-shadow:0 0 5px #73ABAD;
 }
 .subtle-element{
@@ -61,22 +62,24 @@ p{
 }
 .feedback{
 	color:#B89076;
-	margin:1em;
+	margin:0 1rem;
 }
 .feedback-landing{
 	color:#B89076;
 }
-.feedback:has(.feedback-lost){
-	margin:0 !important;
-}
 .feedback-lost{
 	color:#9C8394;
+	margin:0;
+}
+.feedback-lost .command{
+	padding:0;
 }
 #command{
 	animation:show 0.5s ease forwards;
 	display:flex;
 	gap:.4rem;
 	line-height:1.3rem;
+	margin-top:1rem;
 	opacity:0;
 }
 #blinker{

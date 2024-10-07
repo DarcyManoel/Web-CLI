@@ -27,9 +27,19 @@ function submitCommand(key){
 	INPUT.value=``
 	INPUT_REFLECTION.innerHTML=``
 	INPUT_SUGGESTION.innerHTML=``
-	document.getElementById(`command-prefix`).innerHTML=`user:`
+	const FEEDBACK_LOST=`<p class="feedback-lost">Command not found. For a list of available commands, type <span class="command" onclick="submitCommand(this.innerHTML)">'help'</span>.</p>`
+	key=key.replace(/'/g,``)
 	terminalUpdate(1,key)
-	const FEEDBACK_LOST=`<p><span class="feedback-lost">Command not found.</p>`
+	if(key==`help`){
+		let i1=0
+		for(const[key1,value1]of Object.entries(HELP)){
+			for(const[key2,value2]of Object.entries(value1)){
+				setTimeout(terminalUpdate,i1*100,0,`<p class="feedback"><span class="command" onclick="submitCommand(this.innerHTML)">'data ${key2}'</span>${value2}</p>`)
+				i1++
+			}
+		}
+		return
+	}
 	let command=COMMANDS
 	let keys=key.split(` `)
 	for(let i1=0;i1<keys.length;i1++){
@@ -58,8 +68,17 @@ function terminalUpdate(isCommand,content){
 	window.scrollTo(0,document.body.scrollHeight)
 }
 //	commands
+//		organise dictionary keys by priority for command suggestions
 const COMMANDS={}
+const HELP={}
 COMMANDS.data={
+	help:function(){
+		let i1=0
+		for(const[key,value]of Object.entries(HELP.data)){
+			setTimeout(terminalUpdate,i1*100,0,`<p class="feedback"><span class="command" onclick="submitCommand(this.innerHTML)">'data ${key}'</span>${value}</p>`)
+			i1++
+		}
+	},
 	upload:function(){
 		terminalUpdate(0,`<p class="feedback">File upload initiated...</p>`)
 		const fileInput=Object.assign(document.createElement(`input`),{
@@ -102,7 +121,13 @@ COMMANDS.data={
 		terminalUpdate(0,`<p class="feedback">File download initialised...</p>`)
 	}
 }
+HELP.data={
+	download:`Download the active state of data for storage.`,
+	upload:`Upload a data save state file for use.`
+}
+//	command auto-complete
 const COMMANDS_SUGGESTIONS=[]
+COMMANDS_SUGGESTIONS.push(`help`)
 for(const[key1,value1]of Object.entries(COMMANDS)){
 	for(const[key2,value2]of Object.entries(value1)){
 		COMMANDS_SUGGESTIONS.push(`${key1} ${key2}`)
