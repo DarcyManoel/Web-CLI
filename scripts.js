@@ -92,23 +92,22 @@ COMMANDS.help=function(){
 COMMANDS.data={
 	upload:function(){
 		TERMINAL_BACKLOG_FEEDBACK.push(`File upload initiated.`)
-		const fileInput=Object.assign(document.createElement(`input`),{
-			type:`file`,
-			accept:`.json`,
-			style:`display:none`,
-			onchange:(e)=>{
-				const reader=new FileReader()
-				reader.onload=(e)=>{
-					data=JSON.parse(e.target.result)
-					console.log(data)
-				}
-				reader.readAsText(e.target.files[0])
-				document.body.removeChild(fileInput)
-			},
-			oncancel:()=>{
-				document.body.removeChild(fileInput)}
+		const fileInput=document.createElement(`input`)
+		fileInput.type=`file`
+		fileInput.accept=`.json`
+		fileInput.style.display=`none`
+		fileInput.onchange=(e)=>{
+			const reader=new FileReader()
+			reader.onload=()=>{
+				data=JSON.parse(reader.result)
+				console.log(data)
 			}
-		)
+			reader.readAsText(e.target.files[0])
+			document.body.removeChild(fileInput)
+		}
+		fileInput.oncancel=()=>{
+			document.body.removeChild(fileInput)
+		}
 		document.body.appendChild(fileInput)
 		fileInput.click()
 	},
