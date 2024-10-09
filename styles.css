@@ -1,15 +1,11 @@
-::selection{
-	color:#211830;
-	background-color:#519975;
-}
 ::-webkit-scrollbar{
 	width:.5rem;
 }
 ::-webkit-scrollbar-track{
-	-webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3);
+	box-shadow:inset 0 0 6px rgba(0,0,0,0.3);
 }
 ::-webkit-scrollbar-thumb{
-	-webkit-box-shadow:inset 0 0 6px rgba(0,0,0,.3);
+	box-shadow:inset 0 0 6px rgba(0,0,0,.3);
 	background-color:#555;
 }
 body{
@@ -19,7 +15,6 @@ body{
 	margin:1rem 1rem 4rem;
 }
 div{
-	display:block;
 	unicode-bidi:isolate;
 }
 p{
@@ -48,10 +43,10 @@ p:has(.feedback-command){
 	}
 }
 @keyframes show{
-	from{
+	0%{
 		opacity:0;
 	}
-	to{
+	100%{
 		opacity:1;
 	}
 }
@@ -77,7 +72,7 @@ p:has(.feedback-command){
 	opacity:.5;
 }
 #command{
-	animation:show 0.5s ease forwards;
+	animation:show .5s ease forwards;
 	display:flex;
 	gap:.4rem;
 	line-height:1.3rem;
@@ -100,7 +95,6 @@ p:has(.feedback-command){
 #input-suggestion{
 	left:0;
 	opacity:.5;
-	overflow:visible;
 	position:absolute;
 	top:1rem;
 	white-space:nowrap;
