@@ -69,12 +69,13 @@ function terminalUpdate(){
 	if(TERMINAL_BACKLOG_COMMAND.length){
 		TERMINAL.insertAdjacentHTML(`beforeend`,`<p class="command">${TERMINAL_BACKLOG_COMMAND[0]}`)
 		TERMINAL_BACKLOG_COMMAND.shift()
+		window.scrollTo(0,document.body.scrollHeight)
 	}
 	if(TERMINAL_BACKLOG_FEEDBACK.length){
 		TERMINAL.insertAdjacentHTML(`beforeend`,`<p>${TERMINAL_BACKLOG_FEEDBACK[0]}`)
 		TERMINAL_BACKLOG_FEEDBACK.shift()
+		window.scrollTo(0,document.body.scrollHeight)
 	}
-	window.scrollTo(0,document.body.scrollHeight)
 }
 //	commands
 const COMMANDS={}
