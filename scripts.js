@@ -64,16 +64,16 @@ const TERMINAL=document.getElementById(`terminal`)
 const TERMINAL_BACKLOG_COMMAND=[]
 const TERMINAL_BACKLOG_FEEDBACK=[]
 TERMINAL_BACKLOG_FEEDBACK.push(`<span class="feedback-landing">Welcome to this interactive web terminal.`)
-setInterval(terminalUpdate,100)
-function terminalUpdate(){
-	if(TERMINAL_BACKLOG_COMMAND.length){
-		TERMINAL.insertAdjacentHTML(`beforeend`,`<p class="command">${TERMINAL_BACKLOG_COMMAND[0]}`)
-		TERMINAL_BACKLOG_COMMAND.shift()
+setInterval(terminalUpdate,100,TERMINAL_BACKLOG_COMMAND,TERMINAL_BACKLOG_FEEDBACK)
+function terminalUpdate(command,feedback){
+	if(command.length){
+		TERMINAL.insertAdjacentHTML(`beforeend`,`<p class="command">${command[0]}`)
+		command.shift()
 		window.scrollTo(0,document.body.scrollHeight)
 	}
-	if(TERMINAL_BACKLOG_FEEDBACK.length){
-		TERMINAL.insertAdjacentHTML(`beforeend`,`<p>${TERMINAL_BACKLOG_FEEDBACK[0]}`)
-		TERMINAL_BACKLOG_FEEDBACK.shift()
+	if(feedback.length){
+		TERMINAL.insertAdjacentHTML(`beforeend`,`<p>${feedback[0]}`)
+		feedback.shift()
 		window.scrollTo(0,document.body.scrollHeight)
 	}
 }
