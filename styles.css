@@ -91,6 +91,9 @@ p:has(.feedback-lost){
 	opacity:0;
 	position:absolute;
 }
+#input-reflection{
+	white-space:pre;
+}
 #input-suggestion{
 	left:0;
 	opacity:.5;
