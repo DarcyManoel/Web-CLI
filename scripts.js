@@ -106,7 +106,7 @@ COMMANDS.download=function(){
 	const file=new Blob([JSON.stringify(data)],{type:`application/json`})
 	const link=document.createElement(`a`)
 	link.href=URL.createObjectURL(file)
-	link.download=`Life CLI.json`
+	link.download=`Web-CLI data.json`
 	link.click()
 	URL.revokeObjectURL(link.href)
 	TERMINAL_BACKLOG_FEEDBACK.push(`File download initialised.`)
