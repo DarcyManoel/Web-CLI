@@ -43,13 +43,16 @@ function inputCommand(key){
 		INPUT_SUGGESTION.innerHTML=``
 	}
 }
-const FEEDBACK_LOST=`<span class="feedback-lost">Command not found. For a list of available commands, type <span class="feedback-command" onclick="submitCommand(this.innerHTML.replace(/'/g,''))">'help'</span>.`
+const FEEDBACK_LOST=`<span class="feedback-lost">Command not found.`
 function submitCommand(key){
 	INPUT.value=``
 	INPUT_REFLECTION.innerHTML=``
 	INPUT_SUGGESTION.innerHTML=``
-	TERMINAL_BACKLOG_COMMAND.push(`<span class="subtle-element">root:</span> ${key}`)
-	try{COMMANDS[key]()}
+	let keys=key.replace(/\)/,``).split(/[(,\s]/)
+	let command=keys[0]
+	let arguments=keys.splice(1,keys.length)
+	TERMINAL_BACKLOG_COMMAND.push(`<span class="subtle-element">root:</span> ${command}<span class="command-arguments">(<span class="subtle-element">${arguments.join(`</span>,<span class="subtle-element">`)}</span>)</span>`)
+	try{COMMANDS[command](...arguments)}
 	catch{TERMINAL_BACKLOG_FEEDBACK.push(FEEDBACK_LOST)}
 }
 //	output
@@ -72,7 +75,8 @@ function terminalUpdate(command,feedback){
 }
 //	commands
 const COMMANDS={}
-COMMANDS.upload=function(){
+COMMANDS.upload=function(test,test1){
+	console.log(test,test1)
 	TERMINAL_BACKLOG_FEEDBACK.push(`File upload initiated.`)
 	const fileInput=document.createElement(`input`)
 	fileInput.type=`file`
@@ -111,4 +115,9 @@ COMMANDS.download=function(){
 const COMMANDS_SUGGESTIONS=[]
 for(const[key1,value1]of Object.entries(COMMANDS)){
 	COMMANDS_SUGGESTIONS.push(`${key1}`)
+}
+//	tools
+function getArgumentNames(func){
+	const args=func.toString().match(/\(([^)]*)\)/)[1]
+	return args.split(`,`).map(arg=>arg.trim())
 }

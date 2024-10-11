@@ -34,9 +34,6 @@ p:has(.feedback-lost){
 	color:#9C8394;
 	margin:0;
 }
-p:has(.feedback-command){
-	margin:0 1rem;
-}
 @keyframes blinker{
 	50%{
 		opacity:0;
@@ -63,10 +60,12 @@ p:has(.feedback-command){
 	color:#519975;
 	margin:0;
 }
-.feedback-command{
-	color:#73ABAD;
+.command-arguments{
+	color:orange;
 	cursor:pointer;
-	text-shadow:0 0 5px #73ABAD;
+	.subtle-element{
+		opacity:calc(2/3);
+	}
 }
 .subtle-element{
 	opacity:.5;
