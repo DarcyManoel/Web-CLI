@@ -75,8 +75,7 @@ function terminalUpdate(command,feedback){
 }
 //	commands
 const COMMANDS={}
-COMMANDS.upload=function(test,test1){
-	console.log(test,test1)
+COMMANDS.upload=function(){
 	TERMINAL_BACKLOG_FEEDBACK.push(`File upload initiated.`)
 	const fileInput=document.createElement(`input`)
 	fileInput.type=`file`
