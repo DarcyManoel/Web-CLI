@@ -8,32 +8,6 @@
 	box-shadow:inset 0 0 6px rgba(0,0,0,.3);
 	background-color:#555;
 }
-body{
-	background-color:#211D1B;
-	color:#B89076;
-	overflow-x:hidden;
-	margin:1rem 1rem 4rem;
-}
-div{
-	unicode-bidi:isolate;
-}
-p{
-	animation:typing .5s steps(30,end);
-	display:block;
-	letter-spacing:.05em;
-	line-height:1.3em;
-	margin-left:1rem;
-	overflow:hidden;
-	white-space:nowrap;
-}
-p:has(.feedback-landing){
-	color:#B89076;
-	margin:0;
-}
-p:has(.feedback-lost){
-	color:#9C8394;
-	margin:0;
-}
 @keyframes blinker{
 	50%{
 		opacity:0;
@@ -55,52 +29,82 @@ p:has(.feedback-lost){
 		width:100%;
 	}
 }
-.command,
-#command-prefix{
-	color:#519975;
-	margin:0;
-}
-.command-arguments{
-	color:orange;
-	cursor:pointer;
-	.subtle-element{
-		opacity:calc(2/3);
+body{
+	background-color:#211D1B;
+	color:#B89076;
+	overflow-x:hidden;
+	margin:1rem 1rem 4rem;
+	user-select:none;
+	div{
+		unicode-bidi:isolate;
 	}
-}
-.subtle-element{
-	opacity:.5;
-}
-#command{
-	animation:show .5s ease forwards;
-	display:flex;
-	gap:.4rem;
-	line-height:1.3rem;
-	opacity:0;
-}
-#blinker{
-	animation:blinker 1s linear infinite;
-	background-color:#73ABAD;
-	color:#73ABAD;
-	display:inline-block;
-	font-size:.75rem;
-	height:1.5em;
-	overflow:hidden;
-	transform:translate(-.3rem,.1rem);
-}
-#input{
-	opacity:0;
-	position:absolute;
-}
-#input-reflection{
-	white-space:pre;
-}
-#input-suggestion{
-	left:0;
-	opacity:.5;
-	position:absolute;
-	top:1rem;
-	white-space:nowrap;
-}
-#terminal{
-	cursor:text;
+	.subtle-element{
+		opacity:.5;
+	}
+	#terminal{
+		cursor:text;
+		p{
+			animation:typing .5s steps(30,end);
+			display:block;
+			letter-spacing:.05em;
+			line-height:1.3em;
+			margin-left:1rem;
+			overflow:hidden;
+			white-space:nowrap;
+		}
+		p:has(.feedback-landing){
+			color:#B89076;
+			margin:0;
+		}
+		p:has(.feedback-lost){
+			color:#9C8394;
+			margin:0;
+		}
+		.command{
+			color:#519975;
+			margin:0;
+			.command-arguments{
+				color:orange;
+				cursor:pointer;
+				.subtle-element{
+					opacity:calc(2/3);
+				}
+			}
+		}
+	}
+	#command{
+		animation:show .5s ease forwards;
+		display:flex;
+		gap:.4rem;
+		line-height:1.3rem;
+		opacity:0;
+		#command-prefix{
+			color:#519975;
+			margin:0;
+		}
+		#input{
+			opacity:0;
+			position:absolute;
+		}
+		#input-reflection{
+			white-space:pre;
+		}
+		#input-suggestion{
+			left:0;
+			opacity:.5;
+			position:absolute;
+			top:1rem;
+			white-space:nowrap;
+		}
+		#blinker{
+			animation:blinker 1s linear infinite;
+			background-color:#73ABAD;
+			color:#73ABAD;
+			display:inline-block;
+			font-size:.75rem;
+			height:1.5em;
+			overflow:hidden;
+			transform:translate(-.3rem,.1rem);
+		}
+	}
 }
