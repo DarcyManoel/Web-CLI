@@ -6,18 +6,31 @@ const INPUT_SUGGESTION=document.getElementById(`input-suggestion`)
 function inputKeyDown(key,event){
 	INPUT.setSelectionRange(input.value.length,input.value.length)
 	event=event||window.event
+	if(!INPUT.value.length){
+		return
+	}
 	switch(event.keyCode){
+		//	tab
+		case 9:
+			if(INPUT_SUGGESTION.innerHTML.length){
+				INPUT.value=INPUT_SUGGESTION.innerHTML
+				INPUT_REFLECTION.innerHTML=INPUT_SUGGESTION.innerHTML
+				INPUT_SUGGESTION.innerHTML=``
+			}
+			break
 		//	enter/return
 		case 13:
-			if(INPUT.value.length){
-				submitCommand(key)
-			}
+			submitCommand(key)
 			break
 	}
 }
 function inputCommand(key){
 	INPUT_REFLECTION.innerHTML=key
 	window.scrollTo(0,document.body.scrollHeight)
+	if(key==INPUT_SUGGESTION.innerHTML){
+		INPUT_SUGGESTION.innerHTML=``
+		return
+	}
 	if(key.length){
 		for(let i1=0;i1<COMMANDS_SUGGESTIONS.length;i1++){
 			if(COMMANDS_SUGGESTIONS[i1].startsWith(key)){
@@ -32,32 +45,12 @@ function inputCommand(key){
 }
 const FEEDBACK_LOST=`<span class="feedback-lost">Command not found. For a list of available commands, type <span class="feedback-command" onclick="submitCommand(this.innerHTML.replace(/'/g,''))">'help'</span>.`
 function submitCommand(key){
-	if(INPUT_SUGGESTION.innerHTML.length){
-		key=INPUT_SUGGESTION.innerHTML
-	}
 	INPUT.value=``
 	INPUT_REFLECTION.innerHTML=``
 	INPUT_SUGGESTION.innerHTML=``
-	TERMINAL_BACKLOG_COMMAND.push(`<span class="subtle-element">user:</span> ${key}`)
-	let command=COMMANDS
-	let keys=key.split(`.`)
-	for(let i1=0;i1<keys.length;i1++){
-		if(command[keys[i1]]){
-			if(i1===keys.length-1){
-				if(typeof command[keys[i1]]===`function`){
-					command[keys[i1]]()
-					return
-				}else{
-					TERMINAL_BACKLOG_FEEDBACK.push(FEEDBACK_LOST)
-					return
-				}
-			}
-			command=command[keys[i1]]
-		}else{
-			TERMINAL_BACKLOG_FEEDBACK.push(FEEDBACK_LOST)
-			return
-		}
-	}
+	TERMINAL_BACKLOG_COMMAND.push(`<span class="subtle-element">root:</span> ${key}`)
+	try{COMMANDS[key]()}
+	catch{TERMINAL_BACKLOG_FEEDBACK.push(FEEDBACK_LOST)}
 }
 //	output
 const TERMINAL=document.getElementById(`terminal`)
@@ -79,59 +72,43 @@ function terminalUpdate(command,feedback){
 }
 //	commands
 const COMMANDS={}
-COMMANDS.help=function(){
-	for(const[key1,value1]of Object.entries(COMMANDS)){
-		if(typeof value1===`function`){
-			TERMINAL_BACKLOG_FEEDBACK.push(`<span class="feedback-command" onclick="submitCommand(this.innerHTML.replace(/'/g,''))">'${key1}'`)
-			continue
+COMMANDS.upload=function(){
+	TERMINAL_BACKLOG_FEEDBACK.push(`File upload initiated.`)
+	const fileInput=document.createElement(`input`)
+	fileInput.type=`file`
+	fileInput.accept=`.json`
+	fileInput.style.display=`none`
+	fileInput.onchange=(e)=>{
+		const reader=new FileReader()
+		reader.onload=()=>{
+			data=JSON.parse(reader.result)
+			console.log(data)
 		}
-		for(const[key2,value2]of Object.entries(value1)){
-			TERMINAL_BACKLOG_FEEDBACK.push(`<span class="feedback-command" onclick="submitCommand(this.innerHTML.replace(/'/g,''))">'${key1}.${key2}'`)
-		}
+		reader.readAsText(e.target.files[0])
+		document.body.removeChild(fileInput)
 	}
+	fileInput.oncancel=()=>{
+		document.body.removeChild(fileInput)
+	}
+	document.body.appendChild(fileInput)
+	fileInput.click()
 }
-COMMANDS.data={
-	upload:function(){
-		TERMINAL_BACKLOG_FEEDBACK.push(`File upload initiated.`)
-		const fileInput=document.createElement(`input`)
-		fileInput.type=`file`
-		fileInput.accept=`.json`
-		fileInput.style.display=`none`
-		fileInput.onchange=(e)=>{
-			const reader=new FileReader()
-			reader.onload=()=>{
-				data=JSON.parse(reader.result)
-				console.log(data)
-			}
-			reader.readAsText(e.target.files[0])
-			document.body.removeChild(fileInput)
-		}
-		fileInput.oncancel=()=>{
-			document.body.removeChild(fileInput)
-		}
-		document.body.appendChild(fileInput)
-		fileInput.click()
-	},
-	download:function(){
-		const hasData=Object.keys(data).length
-		if(!hasData){
-			TERMINAL_BACKLOG_FEEDBACK.push(`File download blocked, no data to download.`)
-			return
-		}
-		const file=new Blob([JSON.stringify(data)],{type:`application/json`})
-		const link=document.createElement(`a`)
-		link.href=URL.createObjectURL(file)
-		link.download=`Life CLI.json`
-		link.click()
-		URL.revokeObjectURL(link.href)
-		TERMINAL_BACKLOG_FEEDBACK.push(`File download initialised.`)
+COMMANDS.download=function(){
+	const hasData=Object.keys(data).length
+	if(!hasData){
+		TERMINAL_BACKLOG_FEEDBACK.push(`File download blocked, no data to download.`)
+		return
 	}
+	const file=new Blob([JSON.stringify(data)],{type:`application/json`})
+	const link=document.createElement(`a`)
+	link.href=URL.createObjectURL(file)
+	link.download=`Life CLI.json`
+	link.click()
+	URL.revokeObjectURL(link.href)
+	TERMINAL_BACKLOG_FEEDBACK.push(`File download initialised.`)
 }
 //	command auto-complete
 const COMMANDS_SUGGESTIONS=[]
-COMMANDS_SUGGESTIONS.push(`help`)
 for(const[key1,value1]of Object.entries(COMMANDS)){
-	for(const[key2,value2]of Object.entries(value1)){
-		COMMANDS_SUGGESTIONS.push(`${key1}.${key2}`)
-	}
+	COMMANDS_SUGGESTIONS.push(`${key1}`)
 }
