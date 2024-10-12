@@ -35,31 +35,11 @@ body{
 	overflow-x:hidden;
 	margin:1rem 1rem 4rem;
 	user-select:none;
-	div{
-		unicode-bidi:isolate;
-	}
 	.subtle-element{
 		opacity:.5;
 	}
 	#terminal{
 		cursor:text;
-		p{
-			animation:typing .5s steps(30,end);
-			display:block;
-			letter-spacing:.05em;
-			line-height:1.3em;
-			margin-left:1rem;
-			overflow:hidden;
-			white-space:nowrap;
-		}
-		p:has(.feedback-landing){
-			color:#B89076;
-			margin:0;
-		}
-		p:has(.feedback-lost){
-			color:#9C8394;
-			margin:0;
-		}
 		.command{
 			color:#519975;
 			margin:0;
@@ -107,4 +87,24 @@ body{
 			transform:translate(-.3rem,.1rem);
 		}
 	}
+}
+div{
+	unicode-bidi:isolate;
+}
+p{
+	animation:typing .5s steps(30,end);
+	display:block;
+	letter-spacing:.05em;
+	line-height:1.3em;
+	margin-left:1rem;
+	overflow:hidden;
+	white-space:nowrap;
+}
+p:has(.feedback-landing){
+	color:#B89076;
+	margin:0;
+}
+p:has(.feedback-lost){
+	color:#9C8394;
+	margin:0;
 }
