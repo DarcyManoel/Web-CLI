@@ -5,13 +5,11 @@ const INPUT_SUGGESTION=document.getElementById(`input-suggestion`)
 //	input
 function inputKeyDown(key,event){
 	INPUT.setSelectionRange(input.value.length,input.value.length)
-	event=event||window.event
 	if(!INPUT.value.length){
 		return
 	}
 	switch(event.keyCode){
-		//	tab
-		case 9:
+		case 9://tab
 			event.preventDefault()
 			if(INPUT_SUGGESTION.innerHTML.length){
 				INPUT.value=INPUT_SUGGESTION.innerHTML
@@ -19,8 +17,7 @@ function inputKeyDown(key,event){
 				INPUT_SUGGESTION.innerHTML=``
 			}
 			break
-		//	enter/return
-		case 13:
+		case 13://enter/return
 			submitCommand(key)
 			break
 	}
@@ -28,20 +25,16 @@ function inputKeyDown(key,event){
 function inputCommand(key){
 	INPUT_REFLECTION.innerHTML=key
 	window.scrollTo(0,document.body.scrollHeight)
-	if(key==INPUT_SUGGESTION.innerHTML){
+	if(!key.length||key==INPUT_SUGGESTION.innerHTML){
 		INPUT_SUGGESTION.innerHTML=``
 		return
 	}
-	if(key.length){
-		for(let i1=0;i1<COMMANDS_SUGGESTIONS.length;i1++){
-			if(COMMANDS_SUGGESTIONS[i1].startsWith(key)){
-				INPUT_SUGGESTION.innerHTML=COMMANDS_SUGGESTIONS[i1]
-				return
-			}
+	INPUT_SUGGESTION.innerHTML=``
+	for(let i1=0;i1<COMMANDS_SUGGESTIONS.length;i1++){
+		if(COMMANDS_SUGGESTIONS[i1].startsWith(key)){
+			INPUT_SUGGESTION.innerHTML=COMMANDS_SUGGESTIONS[i1]
+			break
 		}
-		INPUT_SUGGESTION.innerHTML=``
-	}else{
-		INPUT_SUGGESTION.innerHTML=``
 	}
 }
 const FEEDBACK_LOST=`<span class="feedback-lost">Command not found.`
@@ -78,13 +71,15 @@ function terminalUpdate(command,feedback){
 		window.scrollTo(0,document.body.scrollHeight)
 	}
 	if(feedback.length){
-		if(typeof feedback[0]==`object`){
-			const TAGGED_ELEMENTS=document.getElementsByTagName(feedback[0].tag)
-			TAGGED_ELEMENTS[TAGGED_ELEMENTS.length-1].insertAdjacentHTML(`beforeend`,`${feedback[0].insert}`)
-			feedback.shift()
-			return
+		switch(typeof feedback[0]){
+			case`string`:
+				TERMINAL.insertAdjacentHTML(`beforeend`,`${feedback[0]}`)
+				break
+			case`object`:
+				const TAGGED_ELEMENTS=document.getElementsByTagName(feedback[0].tag)
+				TAGGED_ELEMENTS[TAGGED_ELEMENTS.length-1].insertAdjacentHTML(`beforeend`,`${feedback[0].insert}`)
+				break
 		}
-		TERMINAL.insertAdjacentHTML(`beforeend`,`${feedback[0]}`)
 		feedback.shift()
 		window.scrollTo(0,document.body.scrollHeight)
 	}
@@ -138,7 +133,6 @@ COMMANDS.funds.table=function(){
 		const BALANCE=value1.records[value1.records.length-1].balance
 		const BALANCE_INT_LENGTH=separateThousands(BALANCE).split(`.`)[0].length
 		const DAYS_SINCE_UPDATE=Math.round((new Date()-new Date(value1.records[value1.records.length-1].date.join(`-`)))/86400000)
-		console.log(DAYS_SINCE_UPDATE)
 		TERMINAL_BACKLOG_FEEDBACK.push({tag:`table`,insert:`
 			<tr>
 				<td>${key1}</td>
