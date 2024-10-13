@@ -51,6 +51,33 @@ body{
 				}
 			}
 		}
+		table{
+			border-spacing:0;
+			margin:.5rem 1rem;
+			tbody{
+				tr{
+					td{
+						border:.1px dashed #9C8394;
+						padding:.2rem 1rem;
+					}
+					td:first-child{
+						padding:.2rem 1rem .2rem .5rem;
+					}
+				}
+			}
+			tbody:nth-child(even),
+			tbody:has(~ tbody:hover),
+			tbody:hover ~ tbody{
+				tr{
+					opacity:calc(2/3);
+				}
+			}
+			tbody:hover{
+				tr{
+					opacity:1 !important;
+				}
+			}
+		}
 	}
 	#command{
 		animation:show .5s ease forwards;
@@ -91,7 +118,7 @@ body{
 div{
 	unicode-bidi:isolate;
 }
-p{
+p,table{
 	animation:typing .5s steps(30,end);
 	display:block;
 	letter-spacing:.05em;
