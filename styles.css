@@ -29,6 +29,9 @@
 		width:100%;
 	}
 }
+*{
+	cursor:default;
+}
 body{
 	background-color:#211D1B;
 	color:#B89076;
@@ -39,17 +42,30 @@ body{
 		opacity:.5;
 	}
 	#terminal{
-		cursor:text;
-		.command{
-			color:#519975;
+		user-select:text;
+		::selection{
+			background-color:#B89076;
+			color:#211D1B;
+		}
+		*{
+			cursor:text;
+		}
+		p,table{
+			animation:typing .5s steps(30,end);
+			display:block;
+			letter-spacing:.05em;
+			line-height:1.3em;
+			margin-left:1rem;
+			overflow:hidden;
+			white-space:nowrap;
+		}
+		p:has(.feedback-landing){
+			color:#B89076;
 			margin:0;
-			.command-arguments{
-				color:orange;
-				cursor:pointer;
-				.subtle-element{
-					opacity:calc(2/3);
-				}
-			}
+		}
+		p:has(.feedback-lost){
+			color:#9C8394;
+			margin:0;
 		}
 		table{
 			border-spacing:0;
@@ -77,6 +93,25 @@ body{
 					opacity:1 !important;
 				}
 			}
+		}
+		.command{
+			color:#519975;
+			cursor:default;
+			margin:0;
+			user-select:none;
+			*{
+				cursor:default;
+			}
+			.command-arguments{
+				color:orange;
+				.subtle-element{
+					opacity:calc(2/3);
+				}
+			}
+		}
+		.feedback-lost::selection{
+			background-color:#9C8394;
+			color:#211D1B;
 		}
 	}
 	#command{
@@ -117,21 +152,4 @@ body{
 }
 div{
 	unicode-bidi:isolate;
-}
-p,table{
-	animation:typing .5s steps(30,end);
-	display:block;
-	letter-spacing:.05em;
-	line-height:1.3em;
-	margin-left:1rem;
-	overflow:hidden;
-	white-space:nowrap;
-}
-p:has(.feedback-landing){
-	color:#B89076;
-	margin:0;
-}
-p:has(.feedback-lost){
-	color:#9C8394;
-	margin:0;
 }

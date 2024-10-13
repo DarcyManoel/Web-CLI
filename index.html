@@ -5,11 +5,11 @@
 		<link rel="stylesheet" type="text/css" href="styles.css">
 		<title>Web CLI</title>
 	</head>
-	<body>
+	<body onkeypress="document.getElementById('input').focus()">
 		<div id="terminal"></div>
-		<div id="command">
+		<div id="command" onclick="document.getElementById('input').focus()">
 			<div id="command-prefix" class="subtle-element">root:</div>
-			<input id="input" autofocus onblur="this.focus()" onkeydown="inputKeyDown(this.value,event)" oninput="inputCommand(this.value)"></input>
+			<input id="input" autofocus onkeydown="inputKeyDown(this.value,event)" oninput="inputCommand(this.value)"></input>
 			<div style="position:relative;">
 				<span id="input-reflection" style="color:#73ABAD;"></span>
 				<span id="input-suggestion" style="color:#73ABAD;"></span>
