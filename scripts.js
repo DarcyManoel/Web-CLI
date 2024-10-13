@@ -12,6 +12,7 @@ function inputKeyDown(key,event){
 	switch(event.keyCode){
 		//	tab
 		case 9:
+			event.preventDefault()
 			if(INPUT_SUGGESTION.innerHTML.length){
 				INPUT.value=INPUT_SUGGESTION.innerHTML
 				INPUT_REFLECTION.innerHTML=INPUT_SUGGESTION.innerHTML
