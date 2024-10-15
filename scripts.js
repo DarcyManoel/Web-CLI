@@ -2,22 +2,22 @@ let data={
 	funds:{},
 	lastUpdated:``
 }
-const INPUT=document.getElementById(`input`)
-const INPUT_REFLECTION=document.getElementById(`input-reflection`)
-const INPUT_SUGGESTION=document.getElementById(`input-suggestion`)
+const input=document.getElementById(`input`)
+const inputReflection=document.getElementById(`input-reflection`)
+const inputSuggestion=document.getElementById(`input-suggestion`)
 //	input
 function inputKeyDown(key,event){
-	INPUT.setSelectionRange(input.value.length,input.value.length)
-	if(!INPUT.value.length){
+	input.setSelectionRange(input.value.length,input.value.length)
+	if(!input.value.length){
 		return
 	}
 	switch(event.keyCode){
 		case 9://tab
 			event.preventDefault()
-			if(INPUT_SUGGESTION.innerHTML.length){
-				INPUT.value=INPUT_SUGGESTION.innerHTML
-				INPUT_REFLECTION.innerHTML=INPUT_SUGGESTION.innerHTML
-				INPUT_SUGGESTION.innerHTML=``
+			if(inputSuggestion.innerHTML.length){
+				input.value=inputSuggestion.innerHTML
+				inputReflection.innerHTML=inputSuggestion.innerHTML
+				inputSuggestion.innerHTML=``
 			}
 			break
 		case 13://enter/return
@@ -26,61 +26,61 @@ function inputKeyDown(key,event){
 	}
 }
 function inputCommand(key){
-	INPUT_REFLECTION.innerHTML=key
+	inputReflection.innerHTML=key
 	window.scrollTo(0,document.body.scrollHeight)
-	if(!key.length||key==INPUT_SUGGESTION.innerHTML){
-		INPUT_SUGGESTION.innerHTML=``
+	if(!key.length||key==inputSuggestion.innerHTML){
+		inputSuggestion.innerHTML=``
 		return
 	}
-	INPUT_SUGGESTION.innerHTML=``
-	for(let i1=0;i1<COMMANDS_SUGGESTIONS.length;i1++){
-		if(COMMANDS_SUGGESTIONS[i1].startsWith(key)){
-			INPUT_SUGGESTION.innerHTML=COMMANDS_SUGGESTIONS[i1]
+	inputSuggestion.innerHTML=``
+	for(let i=0;i<commandsSuggestions.length;i++){
+		if(commandsSuggestions[i].startsWith(key)){
+			inputSuggestion.innerHTML=commandsSuggestions[i]
 			break
 		}
 	}
 }
-const FEEDBACK_LOST=`<span class="feedback-lost">Command not found.`
+const feedbackLost=`<span class="feedback-lost">Command not found.`
 function submitCommand(key){
-	INPUT.value=``
-	INPUT_REFLECTION.innerHTML=``
-	INPUT_SUGGESTION.innerHTML=``
-	let keys=key.replace(/\)/,``).split(/[(,\s]/)
-	let command=keys[0].split(`.`)
-	let arguments=keys.splice(1,keys.length)
-	TERMINAL_BACKLOG_COMMAND.push(`<span class="subtle-element">root:</span> ${command.join(`.`)}<span class="command-arguments">(<span class="subtle-element">${arguments.join(`</span>,<span class="subtle-element">`)}</span>)</span>`)
+	input.value=``
+	inputReflection.innerHTML=``
+	inputSuggestion.innerHTML=``
+	const keys=key.replace(/\)/,``).split(/[(,\s]/)
+	const command=keys[0].split(`.`)
+	const args=keys.splice(1,keys.length)
+	terminalBacklogCommand.push(`<span class="subtle-element">root:</span> ${command.join(`.`)}<span class="command-arguments">(<span class="subtle-element">${args.join(`</span>,<span class="subtle-element">`)}</span>)</span>`)
 	try{
-		COMMANDS[command[0]](...arguments)
+		commands[command[0]](...args)
 	}
 	catch{
 		try{
-			COMMANDS[command[0]][command[1]](...arguments)
+			commands[command[0]][command[1]](...args)
 		}
 		catch{
-			TERMINAL_BACKLOG_FEEDBACK.push(`<p>${FEEDBACK_LOST}`)
+			terminalBacklogFeedback.push(`<p>${feedbackLost}`)
 		}
 	}
 }
 //	output
-const TERMINAL=document.getElementById(`terminal`)
-const TERMINAL_BACKLOG_COMMAND=[]
-const TERMINAL_BACKLOG_FEEDBACK=[]
-TERMINAL_BACKLOG_FEEDBACK.push(`<p><span class="feedback-landing">Welcome to this interactive web terminal.`)
-setInterval(terminalUpdate,100,TERMINAL_BACKLOG_COMMAND,TERMINAL_BACKLOG_FEEDBACK)
+const terminal=document.getElementById(`terminal`)
+const terminalBacklogCommand=[]
+const terminalBacklogFeedback=[]
+terminalBacklogFeedback.push(`<p><span class="feedback-landing">Welcome to this interactive web terminal.`)
+setInterval(terminalUpdate,100,terminalBacklogCommand,terminalBacklogFeedback)
 function terminalUpdate(command,feedback){
 	if(command.length){
-		TERMINAL.insertAdjacentHTML(`beforeend`,`<p class="command">${command[0]}`)
+		terminal.insertAdjacentHTML(`beforeend`,`<p class="command">${command[0]}`)
 		command.shift()
 		window.scrollTo(0,document.body.scrollHeight)
 	}
 	if(feedback.length){
 		switch(typeof feedback[0]){
 			case`string`:
-				TERMINAL.insertAdjacentHTML(`beforeend`,`${feedback[0]}`)
+				terminal.insertAdjacentHTML(`beforeend`,`${feedback[0]}`)
 				break
 			case`object`:
-				const TAGGED_ELEMENTS=document.getElementsByTagName(feedback[0].tag)
-				TAGGED_ELEMENTS[TAGGED_ELEMENTS.length-1].insertAdjacentHTML(`beforeend`,`${feedback[0].insert}`)
+				const taggedElements=document.getElementsByTagName(feedback[0].tag)
+				taggedElements[taggedElements.length-1].insertAdjacentHTML(`beforeend`,`${feedback[0].insert}`)
 				break
 		}
 		feedback.shift()
@@ -88,9 +88,9 @@ function terminalUpdate(command,feedback){
 	}
 }
 //	commands
-const COMMANDS={}
-COMMANDS.upload=function(){
-	TERMINAL_BACKLOG_FEEDBACK.push(`<p>File upload initiated.`)
+const commands={}
+commands.upload=function(){
+	terminalBacklogFeedback.push(`<p>File upload initiated.`)
 	const fileInput=document.createElement(`input`)
 	fileInput.type=`file`
 	fileInput.accept=`.json`
@@ -99,8 +99,8 @@ COMMANDS.upload=function(){
 		const reader=new FileReader()
 		reader.onload=()=>{
 			data=JSON.parse(reader.result)
-			TERMINAL_BACKLOG_FEEDBACK.push(`<p>File upload completed.`)
-			TERMINAL_BACKLOG_FEEDBACK.push(`<p>Data last updated on ${formatDate(data.lastUpdated)}. <span class="subtle-element">(${getDaysSince(data.lastUpdated)})`)
+			terminalBacklogFeedback.push(`<p>File upload completed.`)
+			terminalBacklogFeedback.push(`<p>Data last updated on ${formatDate(data.lastUpdated)}. <span class="subtle-element">(${getDaysSince(data.lastUpdated)})`)
 			console.log(data)
 		}
 		reader.readAsText(e.target.files[0])
@@ -112,10 +112,10 @@ COMMANDS.upload=function(){
 	document.body.appendChild(fileInput)
 	fileInput.click()
 }
-COMMANDS.download=function(){
+commands.download=function(){
 	const hasData=Object.keys(data).length
 	if(!hasData){
-		TERMINAL_BACKLOG_FEEDBACK.push(`<p>File download blocked, no data to download.`)
+		terminalBacklogFeedback.push(`<p>File download blocked, no data to download.`)
 		return
 	}
 	const file=new Blob([JSON.stringify(data)],{type:`application/json`})
@@ -124,43 +124,43 @@ COMMANDS.download=function(){
 	link.download=`Web-CLI data.json`
 	link.click()
 	URL.revokeObjectURL(link.href)
-	TERMINAL_BACKLOG_FEEDBACK.push(`<p>File download initialised.`)
+	terminalBacklogFeedback.push(`<p>File download initialised.`)
 }
-COMMANDS.funds={}
-COMMANDS.funds.table=function(){
+commands.funds={}
+commands.funds.table=function(){
 	try{
 		if(!data.funds){
-			TERMINAL_BACKLOG_FEEDBACK.push(`<p>Render aborted, no funds data to render.`)
+			terminalBacklogFeedback.push(`<p>Render aborted, no funds data to render.`)
 			return
 		}
-		TERMINAL_BACKLOG_FEEDBACK.push(`<p>Rendering funds table.`)
-		TERMINAL_BACKLOG_FEEDBACK.push(`<table></table>`)
-		for(const[key1,value1]of Object.entries(data.funds)){
-			const RECORDS_LAST_KEY=Object.keys(value1.records).pop()
-			const RECORDS_LAST_VALUE=value1.records[RECORDS_LAST_KEY]
-			const BALANCE=RECORDS_LAST_VALUE.balance
-			const BALANCE_INT_LENGTH=separateThousands(BALANCE).split(`.`)[0].length
-			TERMINAL_BACKLOG_FEEDBACK.push({tag:`table`,insert:`
+		terminalBacklogFeedback.push(`<p>Rendering funds table.`)
+		terminalBacklogFeedback.push(`<table></table>`)
+		for(const[key,value]of Object.entries(data.funds)){
+			const recordsLastKey=Object.keys(value.records).pop()
+			const recordsLastValue=value.records[recordsLastKey]
+			const balance=recordsLastValue.balance
+			const balanceIntLength=separateThousands(balance).split(`.`)[0].length
+			terminalBacklogFeedback.push({tag:`table`,insert:`
 				<tr>
-					<td>${key1}</td>
-					<td style="text-align:right;">$${separateThousands(BALANCE).padEnd(BALANCE_INT_LENGTH+3,`.00`)}</td>
+					<td>${key}</td>
+					<td style="text-align:right;">$${separateThousands(balance).padEnd(balanceIntLength+3,`.00`)}</td>
 				</tr>
 			`})
 		}
 	}
 	catch{
-		TERMINAL_BACKLOG_FEEDBACK.splice(-2,2)
-		TERMINAL_BACKLOG_FEEDBACK.push(`<p><span class="feedback-lost">Command failed, something went wrong.`)
+		terminalBacklogFeedback.splice(-2,2)
+		terminalBacklogFeedback.push(`<p><span class="feedback-lost">Command failed, something went wrong.`)
 	}
 }
 
-COMMANDS.funds.update=function(account,balance,date){
+commands.funds.update=function(account,balance,date){
 	if(!data.funds[account]){
-		TERMINAL_BACKLOG_FEEDBACK.push(`<p>Account '${account}' does not exist.`)
+		terminalBacklogFeedback.push(`<p>Account '${account}' does not exist.`)
 		return
 	}
 	if(!balance){
-		TERMINAL_BACKLOG_FEEDBACK.push(`<p>Account '${account}' can not be updated without a balance.`)
+		terminalBacklogFeedback.push(`<p>Account '${account}' cannot be updated without a balance.`)
 		return
 	}
 	if(!date){
@@ -172,15 +172,15 @@ COMMANDS.funds.update=function(account,balance,date){
 	}
 }
 //	command auto-complete
-const COMMANDS_SUGGESTIONS=[]
-for(const[key1,value1]of Object.entries(COMMANDS)){
-	if(typeof value1==`object`){
-		for(const[key2,value2]of Object.entries(value1)){
-			COMMANDS_SUGGESTIONS.push(`${key1}.${key2}`)
+const commandsSuggestions=[]
+for(const[key,value]of Object.entries(commands)){
+	if(typeof value==`object`){
+		for(const[key2,value2]of Object.entries(value)){
+			commandsSuggestions.push(`${key}.${key2}`)
 		}
 		continue
 	}
-	COMMANDS_SUGGESTIONS.push(`${key1}`)
+	commandsSuggestions.push(`${key}`)
 }
 //	tools
 function formatDate(dateStr){
