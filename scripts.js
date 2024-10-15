@@ -137,15 +137,10 @@ COMMANDS.funds.table=function(){
 			const RECORDS_LAST_VALUE=value1.records[RECORDS_LAST_KEY]
 			const BALANCE=RECORDS_LAST_VALUE.balance
 			const BALANCE_INT_LENGTH=separateThousands(BALANCE).split(`.`)[0].length
-			const DAYS_SINCE_UPDATE=Math.round((new Date()-new Date(RECORDS_LAST_KEY))/86400000)
-			const DAYS_PLURALISATION=Math.abs(DAYS_SINCE_UPDATE)==1
-				?`day`
-				:`days`
 			TERMINAL_BACKLOG_FEEDBACK.push({tag:`table`,insert:`
 				<tr>
 					<td>${key1}</td>
 					<td style="text-align:right;">$${separateThousands(BALANCE).padEnd(BALANCE_INT_LENGTH+3,`.00`)}</td>
-					<td style="text-align:right;">${DAYS_SINCE_UPDATE} ${DAYS_PLURALISATION} since update</td>
 				</tr>
 			`})
 		}
