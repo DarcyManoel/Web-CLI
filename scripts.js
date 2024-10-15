@@ -1,5 +1,6 @@
 let data={
-	funds:{}
+	funds:{},
+	lastUpdated:``
 }
 const INPUT=document.getElementById(`input`)
 const INPUT_REFLECTION=document.getElementById(`input-reflection`)
@@ -98,6 +99,8 @@ COMMANDS.upload=function(){
 		const reader=new FileReader()
 		reader.onload=()=>{
 			data=JSON.parse(reader.result)
+			TERMINAL_BACKLOG_FEEDBACK.push(`<p>File upload completed.`)
+			TERMINAL_BACKLOG_FEEDBACK.push(`<p>Data last updated on ${formatDate(data.lastUpdated)}. <span class="subtle-element">(${getDaysSince(data.lastUpdated)})`)
 			console.log(data)
 		}
 		reader.readAsText(e.target.files[0])
@@ -165,6 +168,7 @@ COMMANDS.funds.update=function(account,balance,date){
 		data.funds[account].records[getDateToday()]={
 			balance
 		}
+		data.lastUpdated=getDateToday()
 	}
 }
 //	command auto-complete
@@ -179,6 +183,18 @@ for(const[key1,value1]of Object.entries(COMMANDS)){
 	COMMANDS_SUGGESTIONS.push(`${key1}`)
 }
 //	tools
+function formatDate(dateStr){
+	const months=[`January`,`February`,`March`,`April`,`May`,`June`,`July`,`August`,`September`,`October`,`November`,`December`]
+	const [year,month,day]=dateStr.split(`-`)
+	const daySuffix=day.endsWith(`1`)&&day!==`11`
+		?`st`
+		:day.endsWith(`2`)&&day!==`12`
+			?`nd`
+			:day.endsWith(`3`)&&day!==`13`
+				?`rd`
+				:`th`
+	return `${parseInt(day)}${daySuffix} ${months[parseInt(month)-1]} ${year}`
+}
 function getArgumentNames(func){
 	const args=func.toString().match(/\(([^)]*)\)/)[1]
 	return args.split(`,`).map(arg=>arg.trim())
@@ -189,6 +205,16 @@ function getDateToday(){
 	const month=(today.getMonth()+1).toString().padStart(2,'0')
 	const day=today.getDate().toString().padStart(2,'0')
 	return `${year}-${month}-${day}`
+}
+function getDaysSince(dateStr){
+	const now=new Date()
+	const date=new Date(dateStr)
+	const diff=Math.round((now-date)/86400000)
+	return diff==0
+		?`today`
+		:diff==1
+			?`1 day ago`
+			:`${diff} days ago`
 }
 function separateThousands(int){
 	return int.toString().replace(/\B(?=(\d{3})+(?!\d))/g,`,`)
