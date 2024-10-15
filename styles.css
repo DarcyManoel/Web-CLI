@@ -135,12 +135,11 @@ body{
 	#command{
 		animation:show .5s ease forwards;
 		display:flex;
-		gap:.4rem;
 		line-height:1.3rem;
 		opacity:0;
 		#command-prefix{
 			color:var(--command-color);
-			margin:0;
+			margin-right:.25rem;
 		}
 		#input{
 			opacity:0;
@@ -150,21 +149,16 @@ body{
 			white-space:pre;
 		}
 		#input-suggestion{
-			left:0;
+			left:100%;
 			opacity:.5;
 			position:absolute;
-			top:1rem;
 			white-space:nowrap;
 		}
 		#blinker{
 			animation:blinker 1s linear infinite;
-			background-color:var(--blinker-color);
 			color:var(--blinker-color);
 			display:inline-block;
-			font-size:.75rem;
-			height:1.5em;
 			overflow:hidden;
-			transform:translate(-.3rem,.1rem);
 		}
 	}
 }

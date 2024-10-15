@@ -15,8 +15,8 @@ function inputKeyDown(key,event){
 		case 9://tab
 			event.preventDefault()
 			if(inputSuggestion.innerHTML.length){
-				input.value=inputSuggestion.innerHTML
-				inputReflection.innerHTML=inputSuggestion.innerHTML
+				input.value=`${input.value}${inputSuggestion.innerHTML}`
+				inputReflection.innerHTML=input.value
 				inputSuggestion.innerHTML=``
 			}
 			break
@@ -35,7 +35,7 @@ function inputCommand(key){
 	inputSuggestion.innerHTML=``
 	for(let i=0;i<commandsSuggestions.length;i++){
 		if(commandsSuggestions[i].startsWith(key)){
-			inputSuggestion.innerHTML=commandsSuggestions[i]
+			inputSuggestion.innerHTML=commandsSuggestions[i].replace(key,``)
 			break
 		}
 	}
