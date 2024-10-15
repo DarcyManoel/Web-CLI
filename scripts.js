@@ -1,4 +1,6 @@
-let data={}
+let data={
+	funds:{}
+}
 const INPUT=document.getElementById(`input`)
 const INPUT_REFLECTION=document.getElementById(`input-reflection`)
 const INPUT_SUGGESTION=document.getElementById(`input-suggestion`)
@@ -123,23 +125,51 @@ COMMANDS.download=function(){
 }
 COMMANDS.funds={}
 COMMANDS.funds.table=function(){
-	if(!data.funds){
-		TERMINAL_BACKLOG_FEEDBACK.push(`<p>Render aborted, no funds data to render.`)
+	try{
+		if(!data.funds){
+			TERMINAL_BACKLOG_FEEDBACK.push(`<p>Render aborted, no funds data to render.`)
+			return
+		}
+		TERMINAL_BACKLOG_FEEDBACK.push(`<p>Rendering funds table.`)
+		TERMINAL_BACKLOG_FEEDBACK.push(`<table></table>`)
+		for(const[key1,value1]of Object.entries(data.funds)){
+			const RECORDS_LAST_KEY=Object.keys(value1.records).pop()
+			const RECORDS_LAST_VALUE=value1.records[RECORDS_LAST_KEY]
+			const BALANCE=RECORDS_LAST_VALUE.balance
+			const BALANCE_INT_LENGTH=separateThousands(BALANCE).split(`.`)[0].length
+			const DAYS_SINCE_UPDATE=Math.round((new Date()-new Date(RECORDS_LAST_KEY))/86400000)
+			const DAYS_PLURALISATION=Math.abs(DAYS_SINCE_UPDATE)==1
+				?`day`
+				:`days`
+			TERMINAL_BACKLOG_FEEDBACK.push({tag:`table`,insert:`
+				<tr>
+					<td>${key1}</td>
+					<td style="text-align:right;">$${separateThousands(BALANCE).padEnd(BALANCE_INT_LENGTH+3,`.00`)}</td>
+					<td style="text-align:right;">${DAYS_SINCE_UPDATE} ${DAYS_PLURALISATION} since update</td>
+				</tr>
+			`})
+		}
+	}
+	catch{
+		TERMINAL_BACKLOG_FEEDBACK.splice(-2,2)
+		TERMINAL_BACKLOG_FEEDBACK.push(`<p><span class="feedback-lost">Command failed, something went wrong.`)
+	}
+}
+
+COMMANDS.funds.update=function(account,balance,date){
+	if(!data.funds[account]){
+		TERMINAL_BACKLOG_FEEDBACK.push(`<p>Account '${account}' does not exist.`)
 		return
 	}
-	TERMINAL_BACKLOG_FEEDBACK.push(`<p>Rendering funds table.`)
-	TERMINAL_BACKLOG_FEEDBACK.push(`<table></table>`)
-	for(const[key1,value1]of Object.entries(data.funds)){
-		const BALANCE=value1.records[value1.records.length-1].balance
-		const BALANCE_INT_LENGTH=separateThousands(BALANCE).split(`.`)[0].length
-		const DAYS_SINCE_UPDATE=Math.round((new Date()-new Date(value1.records[value1.records.length-1].date.join(`-`)))/86400000)
-		TERMINAL_BACKLOG_FEEDBACK.push({tag:`table`,insert:`
-			<tr>
-				<td>${key1}</td>
-				<td style="text-align:right;">$${separateThousands(BALANCE).padEnd(BALANCE_INT_LENGTH+3,`.00`)}</td>
-				<td style="text-align:right;">${DAYS_SINCE_UPDATE} days since update</td>
-			</tr>
-		`})
+	if(!balance){
+		TERMINAL_BACKLOG_FEEDBACK.push(`<p>Account '${account}' can not be updated without a balance.`)
+		return
+	}
+	if(!date){
+		console.log(getDateToday())
+		data.funds[account].records[getDateToday()]={
+			balance
+		}
 	}
 }
 //	command auto-complete
@@ -157,6 +187,13 @@ for(const[key1,value1]of Object.entries(COMMANDS)){
 function getArgumentNames(func){
 	const args=func.toString().match(/\(([^)]*)\)/)[1]
 	return args.split(`,`).map(arg=>arg.trim())
+}
+function getDateToday(){
+	const today=new Date()
+	const year=today.getFullYear()
+	const month=(today.getMonth()+1).toString().padStart(2,'0')
+	const day=today.getDate().toString().padStart(2,'0')
+	return `${year}-${month}-${day}`
 }
 function separateThousands(int){
 	return int.toString().replace(/\B(?=(\d{3})+(?!\d))/g,`,`)
