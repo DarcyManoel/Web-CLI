@@ -52,8 +52,10 @@
 body{
 	background-color:var(--background-color);
 	color:var(--text-color);
+	letter-spacing:.05em;
+	line-height:1.2em;
+	margin:1.2em 1.2em 4rem;
 	overflow-x:hidden;
-	margin:1rem 1rem 4rem;
 	user-select:none;
 	.subtle-element{
 		opacity:.5;
@@ -71,9 +73,7 @@ body{
 		table{
 			animation:typing .5s steps(30,end);
 			display:block;
-			letter-spacing:.05em;
-			line-height:1.3em;
-			margin-left:1rem;
+			margin:0 1.2em;
 			overflow:hidden;
 			white-space:nowrap;
 		}
@@ -87,7 +87,7 @@ body{
 		}
 		table{
 			border-spacing:0;
-			margin:.5rem 1rem;
+			margin:1.2em;
 			tbody{
 				tr{
 					td{
@@ -135,11 +135,9 @@ body{
 	#command{
 		animation:show .5s ease forwards;
 		display:flex;
-		line-height:1.3rem;
 		opacity:0;
 		#command-prefix{
 			color:var(--command-color);
-			margin-right:.25rem;
 		}
 		#input{
 			opacity:0;
