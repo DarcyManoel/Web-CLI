@@ -116,6 +116,27 @@ body{
 				}
 			}
 		}
+		.feedback-lost::selection{
+			background-color:var(--feedback-lost-selection-background);
+			color:var(--selection-color);
+		}
+		.line-tabbed{
+			cursor:default;
+			margin-left:2.4em;
+			transition:.1s;
+			user-select:none;
+			span{
+				color:#73ABAD;
+				cursor:pointer;
+			}
+		}
+		.line-tabbed:has(~ .line-tabbed span:hover),
+		.line-tabbed:has(span:hover) ~ .line-tabbed{
+			opacity:calc(2/3);
+		}
+		.line-tabbed span:hover{
+			text-shadow:0 0 .4em #73ABAD;
+		}
 		.command{
 			color:var(--command-color);
 			cursor:default;
@@ -130,10 +151,6 @@ body{
 					opacity:calc(2/3);
 				}
 			}
-		}
-		.feedback-lost::selection{
-			background-color:var(--feedback-lost-selection-background);
-			color:var(--selection-color);
 		}
 	}
 	#command{

@@ -40,12 +40,19 @@ function inputCommand(key){
 		}
 	}
 }
+function setInput(newInput){
+	input.value=newInput
+	inputReflection.innerHTML=input.value
+	inputSuggestion.innerHTML=``
+	input.focus()
+	input.setSelectionRange(input.value.length,input.value.length)
+}
 const feedbackLost=`<span class="feedback-lost">Command not found.`
 function submitCommand(key){
 	input.value=``
 	inputReflection.innerHTML=``
 	inputSuggestion.innerHTML=``
-	const keys=key.replace(/\)/,``).split(/[(,\s]/)
+	const keys=key.replace(/\)/,``).split(/[(,]/)
 	const command=keys[0].split(`.`)
 	const args=keys.splice(1,keys.length)
 	terminalBacklogCommand.push(`<span class="subtle-element">root:</span> ${command.join(`.`)}<span class="command-arguments">(<span class="subtle-element">${args.join(`</span>,<span class="subtle-element">`)}</span>)</span>`)
@@ -153,8 +160,14 @@ commands.funds.table=function(){
 		terminalBacklogFeedback.push(`<p><span class="feedback-lost">Command failed, something went wrong.`)
 	}
 }
-
 commands.funds.update=function(account,balance,date){
+	if(account===undefined){
+		terminalBacklogFeedback.push(`<p>Which account needs to be updated?`)
+		for(const account in data.funds){
+			terminalBacklogFeedback.push(`<p class="line-tabbed">~ <span onclick="setInput('funds.update(${account},')">'${account}'`)
+		}
+		return
+	}
 	if(!data.funds[account]){
 		terminalBacklogFeedback.push(`<p>Account '${account}' does not exist.`)
 		return
@@ -164,7 +177,6 @@ commands.funds.update=function(account,balance,date){
 		return
 	}
 	if(!date){
-		console.log(getDateToday())
 		data.funds[account].records[getDateToday()]={
 			balance
 		}
