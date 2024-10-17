@@ -155,11 +155,9 @@ body{
 	}
 	#command{
 		animation:show .5s ease forwards;
+		color:var(--command-color);
 		display:flex;
 		opacity:0;
-		#command-prefix{
-			color:var(--command-color);
-		}
 		#input{
 			opacity:0;
 			position:absolute;
