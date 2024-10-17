@@ -27,6 +27,11 @@ function inputKeyDown(key,event){
 }
 function inputCommand(key){
 	inputReflection.innerHTML=key
+	inputReflection.innerHTML=(inputReflection.innerHTML
+		.replace(/\(/,`<span class="command-arguments">(<span class="subtle-element">`)
+		.replace(/,/g,`</span>,<span class="subtle-element">`)
+		.replace(/\)/,`</span>)`)
+	)
 	window.scrollTo(0,document.body.scrollHeight)
 	if(!key.length||key==inputSuggestion.innerHTML){
 		inputSuggestion.innerHTML=``
@@ -42,8 +47,7 @@ function inputCommand(key){
 }
 function setInput(newInput){
 	input.value=newInput
-	inputReflection.innerHTML=input.value
-	inputSuggestion.innerHTML=``
+	inputCommand(input.value)
 	input.focus()
 	input.setSelectionRange(input.value.length,input.value.length)
 }

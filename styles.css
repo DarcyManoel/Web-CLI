@@ -61,6 +61,12 @@ body{
 	margin:1.2em 1.2em 4rem;
 	overflow-x:hidden;
 	user-select:none;
+	.command-arguments{
+		color:var(--command-arg-color);
+		.subtle-element{
+			opacity:calc(2/3);
+		}
+	}
 	.subtle-element{
 		opacity:.5;
 	}
@@ -144,12 +150,6 @@ body{
 			user-select:none;
 			*{
 				cursor:default;
-			}
-			.command-arguments{
-				color:var(--command-arg-color);
-				.subtle-element{
-					opacity:calc(2/3);
-				}
 			}
 		}
 	}
