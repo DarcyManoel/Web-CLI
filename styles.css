@@ -14,7 +14,6 @@
 	--table-border-color:var(--feedback-lost-color);
 	--text-color:#B89076;
 }
-
 ::-webkit-scrollbar{
 	width:var(--scrollbar-width);
 }
@@ -24,6 +23,10 @@
 ::-webkit-scrollbar-thumb{
 	box-shadow:var(--scrollbar-thumb-shadow);
 	background-color:var(--scrollbar-thumb-color);
+}
+@font-face{
+	font-family:"ubuntu-mono";
+	src:url("fonts/UbuntuMono-Regular.ttf");
 }
 @keyframes blinker{
 	50%{
@@ -52,8 +55,9 @@
 body{
 	background-color:var(--background-color);
 	color:var(--text-color);
-	letter-spacing:.05em;
-	line-height:1.2em;
+	font-family:ubuntu-mono;
+	letter-spacing:.02em;
+	line-height:1.15em;
 	margin:1.2em 1.2em 4rem;
 	overflow-x:hidden;
 	user-select:none;
