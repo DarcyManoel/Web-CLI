@@ -180,6 +180,11 @@ commands.funds.update=function(account,balance,date){
 		terminalBacklogFeedback.push(`<p>Account '${account}' cannot be updated without a balance.`)
 		return
 	}
+	if(isNaN(+balance)){
+		terminalBacklogFeedback.push(`<p>Account '${account}' cannot be updated with balance '${balance}'.`)
+		return
+	}
+	balance=+balance
 	if(!date){
 		data.funds[account].records[getDateToday()]={
 			balance
