@@ -131,17 +131,17 @@ body{
 			margin-left:2.4em;
 			transition:.1s;
 			user-select:none;
-			span{
-				color:#73ABAD;
-				cursor:pointer;
-			}
 		}
-		.line-tabbed:has(~ .line-tabbed span:hover),
-		.line-tabbed:has(span:hover) ~ .line-tabbed{
-			opacity:calc(2/3);
+		.interactive-text{
+			color:#73ABAD;
+			cursor:pointer;
 		}
-		.line-tabbed span:hover{
+		.interactive-text:hover{
 			text-shadow:0 0 .4em #73ABAD;
+		}
+		.line-tabbed:has(~ .line-tabbed .interactive-text:hover),
+		.line-tabbed:has(.interactive-text:hover) ~ .line-tabbed{
+			opacity:calc(2/3);
 		}
 		.command{
 			color:var(--command-color);
