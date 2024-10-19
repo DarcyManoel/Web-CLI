@@ -165,6 +165,7 @@ commands.funds.table=function(){
 	}
 }
 commands.funds.update=function(account,balance,date){
+	//	account parameter checks
 	if(account===undefined){
 		terminalBacklogFeedback.push(`<p>Which account needs to be updated?`)
 		for(const account in data.funds){
@@ -176,6 +177,7 @@ commands.funds.update=function(account,balance,date){
 		terminalBacklogFeedback.push(`<p>Account '${account}' does not exist.`)
 		return
 	}
+	//	balance parameter checks
 	if(!balance){
 		terminalBacklogFeedback.push(`<p>Account '${account}' cannot be updated without a balance.`)
 		return
@@ -184,14 +186,25 @@ commands.funds.update=function(account,balance,date){
 		terminalBacklogFeedback.push(`<p>Account '${account}' cannot be updated with balance '${balance}'.`)
 		return
 	}
-	balance=+balance
-	if(!date){
-		data.funds[account].records[getDateToday()]={
-			balance
+	//	date parameter checks
+	if(date){
+		if(!/^\d{4}-\d{2}-\d{2}$/.test(date)){
+			terminalBacklogFeedback.push(`<p>Date format is invalid.`)
+			return
 		}
-		data.lastUpdated=getDateToday()
-		terminalBacklogFeedback.push(`<p>Account <span class="interactive-text" onclick="setInput('funds.update(${account},')">'${account}'</span></span> updated with balance: $${balance}.`)
+		if(new Date(date)==`Invalid Date`){
+			terminalBacklogFeedback.push(`<p>Date value is invalid.`)
+			return
+		}
 	}
+	//	execution
+	balance=+balance
+	data.funds[account].records[date||getDateToday()]={
+		balance
+	}
+	data.lastUpdated=getDateToday()
+	terminalBacklogFeedback.push(`<p>Account <span class="interactive-text" onclick="setInput('funds.update(${account},')">'${account}'</span></span> updated on date: ${date||getDateToday()} with balance: $${balance}`)
+	console.log(data.funds[account])//	temp
 }
 //	command auto-complete
 const commandsSuggestions=[]
