@@ -86,6 +86,13 @@ body{
 			margin:0 1.2em;
 			overflow:hidden;
 			white-space:nowrap;
+			span[onclick]{
+				color:#73ABAD;
+				cursor:pointer;
+			}
+			span[onclick]:hover{
+				text-shadow:0 0 .4em #73ABAD;
+			}
 		}
 		p:has(.feedback-landing){
 			color:var(--text-color);
@@ -131,13 +138,6 @@ body{
 			margin-left:2.4em;
 			transition:.1s;
 			user-select:none;
-		}
-		.interactive-text{
-			color:#73ABAD;
-			cursor:pointer;
-		}
-		.interactive-text:hover{
-			text-shadow:0 0 .4em #73ABAD;
 		}
 		.line-tabbed:has(~ .line-tabbed .interactive-text:hover),
 		.line-tabbed:has(.interactive-text:hover) ~ .line-tabbed{

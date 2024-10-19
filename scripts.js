@@ -169,7 +169,7 @@ commands.funds.update=function(account,balance,date){
 	if(account===undefined){
 		terminalBacklogFeedback.push(`<p>Which account needs to be updated?`)
 		for(const account in data.funds){
-			terminalBacklogFeedback.push(`<p class="line-tabbed">~ <span class="interactive-text" onclick="setInput('funds.update(${account},')">'${account}'`)
+			terminalBacklogFeedback.push(`<p class="line-tabbed">~ <span onclick="setInput('funds.update(${account},')">'${account}'`)
 		}
 		return
 	}
@@ -203,7 +203,7 @@ commands.funds.update=function(account,balance,date){
 		balance
 	}
 	data.lastUpdated=getDateToday()
-	terminalBacklogFeedback.push(`<p>Account <span class="interactive-text" onclick="setInput('funds.update(${account},')">'${account}'</span></span> updated on date: ${date||getDateToday()} with balance: $${balance}`)
+	terminalBacklogFeedback.push(`<p>Account <span onclick="setInput('funds.update(${account},')">'${account}'</span></span> updated on date: ${date||getDateToday()} with balance: $${balance}`)
 	console.log(data.funds[account])//	temp
 }
 //	command auto-complete
