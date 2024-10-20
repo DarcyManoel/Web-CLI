@@ -169,7 +169,7 @@ commands.funds.update=function(account,balance,date){
 	if(account===undefined){
 		terminalBacklogFeedback.push(`<p>Which account needs to be updated?`)
 		for(const account in data.funds){
-			terminalBacklogFeedback.push(`<p class="line-tabbed">~ <span onclick="setInput('funds.update(${account},')">'${account}'`)
+			terminalBacklogFeedback.push(`<p onclick="setInput('funds.update(${account},')">'${account}'`)
 		}
 		return
 	}

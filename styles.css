@@ -1,6 +1,6 @@
 :root{
 	--background-color:#211D1B;
-	--blinker-color:#73ABAD;
+	--interaction-color:#73ABAD;
 	--command-arg-color:orange;
 	--command-color:#519975;
 	--feedback-lost-color:#9C8394;
@@ -86,13 +86,24 @@ body{
 			margin:0 1.2em;
 			overflow:hidden;
 			white-space:nowrap;
-			span[onclick]{
-				color:#73ABAD;
-				cursor:pointer;
-			}
-			span[onclick]:hover{
-				text-shadow:0 0 .4em #73ABAD;
-			}
+		}
+		p[onclick]{
+			margin-left:2.4em;
+			transition:.1s;
+			color:var(--interaction-color);
+			cursor:pointer;
+			user-select:none;
+		}
+		p[onclick]::before{
+			color:var(--text-color);
+			content:'~';
+		}
+		p[onclick]:has(~ p[onclick]:hover),
+		p[onclick]:hover ~ p[onclick]{
+			opacity:calc(2/3);
+		}
+		p[onclick]:hover{
+			padding-left:.3em;
 		}
 		p:has(.feedback-landing){
 			color:var(--text-color);
@@ -133,16 +144,6 @@ body{
 			background-color:var(--feedback-lost-selection-background);
 			color:var(--selection-color);
 		}
-		.line-tabbed{
-			cursor:default;
-			margin-left:2.4em;
-			transition:.1s;
-			user-select:none;
-		}
-		.line-tabbed:has(~ .line-tabbed .interactive-text:hover),
-		.line-tabbed:has(.interactive-text:hover) ~ .line-tabbed{
-			opacity:calc(2/3);
-		}
 		.command{
 			color:var(--command-color);
 			cursor:default;
@@ -173,7 +174,7 @@ body{
 		}
 		#blinker{
 			animation:blinker 1s linear infinite;
-			color:var(--blinker-color);
+			color:var(--interaction-color);
 			display:inline-block;
 			overflow:hidden;
 		}
