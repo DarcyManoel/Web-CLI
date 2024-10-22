@@ -38,7 +38,7 @@ function inputCommand(key){
 		return
 	}
 	inputSuggestion.innerHTML=``
-	for(let i=0;i<commandsSuggestions.length;i++){
+	for(let i=0;i<commandsSuggestions.length;++i){
 		if(commandsSuggestions[i].startsWith(key)){
 			inputSuggestion.innerHTML=commandsSuggestions[i].replace(key,``)
 			break
