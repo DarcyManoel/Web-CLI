@@ -167,6 +167,10 @@ commands.funds.table=function(){
 commands.funds.update=function(account,balance,date){
 	//	account parameter checks
 	if(account===undefined){
+		if(!Object.keys(data.funds).length){
+			terminalBacklogFeedback.push(`<p>There are no accounts saved.`)
+			return
+		}
 		terminalBacklogFeedback.push(`<p>Which account needs to be updated?`)
 		for(const account in data.funds){
 			terminalBacklogFeedback.push(`<p onclick="setInput('funds.update(${account},')">'${account}'`)
@@ -204,7 +208,6 @@ commands.funds.update=function(account,balance,date){
 	}
 	data.lastUpdated=getDateToday()
 	terminalBacklogFeedback.push(`<p>Account <span onclick="setInput('funds.update(${account},')">'${account}'</span></span> updated on date: ${date||getDateToday()} with balance: $${balance}`)
-	console.log(data.funds[account])//	temp
 }
 //	command auto-complete
 const commandsSuggestions=[]
