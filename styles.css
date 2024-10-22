@@ -79,6 +79,9 @@ body{
 		*{
 			cursor:text;
 		}
+		details>summary{
+			list-style:none;
+		}
 		p,
 		table{
 			animation:typing .5s steps(30,end);
@@ -98,8 +101,8 @@ body{
 			color:var(--text-color);
 			content:'~';
 		}
-		p[onclick]:has(~ p[onclick]:hover),
-		p[onclick]:hover ~ p[onclick]{
+		p[onclick]:has(~p[onclick]:hover),
+		p[onclick]:hover~p[onclick]{
 			opacity:calc(2/3);
 		}
 		p[onclick]:hover{
@@ -112,6 +115,15 @@ body{
 		p:has(.feedback-lost){
 			color:var(--feedback-lost-color);
 			margin:0;
+		}
+		summary{
+			color:var(--command-color);
+			cursor:default;
+			margin:0;
+			user-select:none;
+			*{
+				cursor:default;
+			}
 		}
 		table{
 			border-spacing:0;
@@ -128,8 +140,8 @@ body{
 				}
 			}
 			tbody:nth-child(even),
-			tbody:has(~ tbody:hover),
-			tbody:hover ~ tbody{
+			tbody:has(~tbody:hover),
+			tbody:hover~tbody{
 				tr{
 					opacity:calc(2/3);
 				}
@@ -143,15 +155,6 @@ body{
 		.feedback-lost::selection{
 			background-color:var(--feedback-lost-selection-background);
 			color:var(--selection-color);
-		}
-		.command{
-			color:var(--command-color);
-			cursor:default;
-			margin:0;
-			user-select:none;
-			*{
-				cursor:default;
-			}
 		}
 	}
 	#command{

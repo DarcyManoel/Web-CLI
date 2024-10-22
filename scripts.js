@@ -59,7 +59,7 @@ function submitCommand(key){
 	const keys=key.replace(/\)/,``).split(/[(,]/)
 	const command=keys[0].split(`.`)
 	const args=keys.splice(1,keys.length)
-	terminalBacklogCommand.push(`<span class="subtle-element">root:</span> ${command.join(`.`)}<span class="command-arguments">(<span class="subtle-element">${args.join(`</span>,<span class="subtle-element">`)}</span>)</span>`)
+	terminalBacklogCommand.push(`${command.join(`.`)}<span class="command-arguments">(<span class="subtle-element">${args.join(`</span>,<span class="subtle-element">`)}</span>)</span>`)
 	try{
 		commands[command[0]](...args)
 	}
@@ -76,18 +76,18 @@ function submitCommand(key){
 const terminal=document.getElementById(`terminal`)
 const terminalBacklogCommand=[]
 const terminalBacklogFeedback=[]
-terminalBacklogFeedback.push(`<p><span class="feedback-landing">Welcome to this interactive web terminal.`)
+terminal.insertAdjacentHTML(`beforeend`,`<p><span class="feedback-landing">Welcome to this interactive web terminal.`)
 setInterval(terminalUpdate,100,terminalBacklogCommand,terminalBacklogFeedback)
 function terminalUpdate(command,feedback){
 	if(command.length){
-		terminal.insertAdjacentHTML(`beforeend`,`<p class="command">${command[0]}`)
+		terminal.insertAdjacentHTML(`beforeend`,`<details open><summary><span class="subtle-element">root:</span> ${command[0]}`)
 		command.shift()
 		window.scrollTo(0,document.body.scrollHeight)
 	}
 	if(feedback.length){
 		switch(typeof feedback[0]){
 			case`string`:
-				terminal.insertAdjacentHTML(`beforeend`,`${feedback[0]}`)
+				terminal.children[terminal.children.length-1].insertAdjacentHTML(`beforeend`,`${feedback[0]}`)
 				break
 			case`object`:
 				const taggedElements=document.getElementsByTagName(feedback[0].tag)
