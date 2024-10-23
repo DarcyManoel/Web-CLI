@@ -1,17 +1,18 @@
 :root{
 	--background-color:#211D1B;
-	--interaction-color:#73ABAD;
 	--command-arg-color:orange;
 	--command-color:#519975;
-	--feedback-lost-color:#9C8394;
-	--feedback-lost-selection-background:var(--feedback-lost-color);
+	--feedback-lost-selection-background:var(--feedback-lost);
+	--feedback-lost:#9C8394;
+	--interaction-color:#73ABAD;
 	--scrollbar-thumb-color:#555;
 	--scrollbar-thumb-shadow:inset 0 0 6px rgba(0,0,0,.3);
 	--scrollbar-track-shadow:inset 0 0 6px rgba(0,0,0,.3);
 	--scrollbar-width:.5rem;
 	--selection-background:var(--text-color);
 	--selection-color:var(--background-color);
-	--table-border-color:var(--feedback-lost-color);
+	--suggested-commands-opener:var(--feedback-lost);
+	--table-border-color:var(--feedback-lost);
 	--text-color:#B89076;
 }
 ::-webkit-scrollbar{
@@ -91,12 +92,18 @@ body{
 			white-space:nowrap;
 		}
 		p[onclick]{
+			color:var(--interaction-color);
+			cursor:pointer;
 			margin-left:2.4em;
 			transition:.1s;
+			user-select:none;
+			span{
+				cursor:pointer;
+			}
 		}
 		p[onclick]::before{
 			color:var(--text-color);
-			content:'~';
+			content:'~ ';
 		}
 		p[onclick]:has(~p[onclick]:hover),
 		p[onclick]:hover~p[onclick]{
@@ -110,7 +117,7 @@ body{
 			margin:0;
 		}
 		p:has(.feedback-lost){
-			color:var(--feedback-lost-color);
+			color:var(--feedback-lost);
 			margin:0;
 		}
 		summary{
@@ -153,10 +160,12 @@ body{
 			background-color:var(--feedback-lost-selection-background);
 			color:var(--selection-color);
 		}
-		.insert-command{
-			color:var(--interaction-color);
-			cursor:pointer;
-			user-select:none;
+		.suggested-commands-opener{
+			color:var(--suggested-commands-opener);
+		}
+		.suggested-commands-opener::selection{
+			background-color:var(--feedback-lost-selection-background);
+			color:var(--selection-color);
 		}
 	}
 	#command{
