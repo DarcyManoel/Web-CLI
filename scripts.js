@@ -52,7 +52,6 @@ function setInput(newInput){
 		.focus()
 		.setSelectionRange(input.value.length,input.value.length)
 }
-const feedbackLost=`<span class="feedback-lost">Command not found.`
 function submitCommand(key){
 	input.value=``
 	inputReflection.innerHTML=``
@@ -71,7 +70,7 @@ function submitCommand(key){
 			commands[command[0]][command[1]](...args)
 		}
 		catch{
-			terminalBacklogFeedback.push(`<p>${feedbackLost}`)
+			terminalBacklogFeedback.push(`<p><span class="feedback-lost">Command not found.`)
 		}
 	}
 }
