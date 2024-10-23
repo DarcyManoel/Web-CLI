@@ -48,15 +48,18 @@ function inputCommand(key){
 function setInput(newInput){
 	input.value=newInput
 	inputCommand(input.value)
-	input.focus()
-	input.setSelectionRange(input.value.length,input.value.length)
+	input
+		.focus()
+		.setSelectionRange(input.value.length,input.value.length)
 }
 const feedbackLost=`<span class="feedback-lost">Command not found.`
 function submitCommand(key){
 	input.value=``
 	inputReflection.innerHTML=``
 	inputSuggestion.innerHTML=``
-	const keys=key.replace(/\)/,``).split(/[(,]/)
+	const keys=key
+		.replace(/\)/,``)
+		.split(/[(,]/)
 	const command=keys[0].split(`.`)
 	const args=keys.splice(1,keys.length)
 	terminalBacklogCommand.push(`${command.join(`.`)}<span class="command-arguments">(<span class="subtle-element">${args.join(`</span>,<span class="subtle-element">`)}</span>)</span>`)
@@ -112,14 +115,23 @@ function formatDate(dateStr){
 	return `${parseInt(day)}${daySuffix} ${months[parseInt(month)-1]} ${year}`
 }
 function getArgumentNames(func){
-	const args=func.toString().match(/\(([^)]*)\)/)[1]
-	return args.split(`,`).map(arg=>arg.trim())
+	const args=func
+		.toString()
+		.match(/\(([^)]*)\)/)[1]
+	return args
+		.split(`,`)
+		.map(arg=>arg.trim())
 }
 function getDateToday(){
 	const today=new Date()
 	const year=today.getFullYear()
-	const month=(today.getMonth()+1).toString().padStart(2,'0')
-	const day=today.getDate().toString().padStart(2,'0')
+	const month=(today.getMonth()+1)
+		.toString()
+		.padStart(2,'0')
+	const day=today
+		.getDate()
+		.toString()
+		.padStart(2,'0')
 	return `${year}-${month}-${day}`
 }
 function getDaysSince(dateStr){
@@ -133,5 +145,7 @@ function getDaysSince(dateStr){
 			:`${diff} days ago`
 }
 function separateThousands(int){
-	return int.toString().replace(/\B(?=(\d{3})+(?!\d))/g,`,`)
+	return int
+		.toString()
+		.replace(/\B(?=(\d{3})+(?!\d))/g,`,`)
 }
