@@ -1,4 +1,7 @@
 const commands={}
+commands.clear=function(){
+	terminal.innerHTML=``
+}
 commands.upload=function(){
 	terminalBacklogFeedback.push(`<p>File upload initiated.`)
 	const fileInput=document.createElement(`input`)
