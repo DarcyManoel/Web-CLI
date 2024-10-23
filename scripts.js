@@ -48,9 +48,8 @@ function inputCommand(key){
 function setInput(newInput){
 	input.value=newInput
 	inputCommand(input.value)
-	input
-		.focus()
-		.setSelectionRange(input.value.length,input.value.length)
+	input.focus()
+	input.setSelectionRange(input.value.length,input.value.length)
 }
 function submitCommand(key){
 	input.value=``
