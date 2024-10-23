@@ -140,23 +140,32 @@ commands.download=function(){
 commands.funds={}
 commands.funds.table=function(){
 	try{
-		if(!data.funds){
+		if(!Object.keys(data.funds).length){
 			terminalBacklogFeedback.push(`<p>Render aborted, no funds data to render.`)
 			return
 		}
 		terminalBacklogFeedback.push(`<p>Rendering funds table.`)
 		terminalBacklogFeedback.push(`<table></table>`)
 		for(const[key,value]of Object.entries(data.funds)){
-			const recordsLastKey=Object.keys(value.records).pop()
-			const recordsLastValue=value.records[recordsLastKey]
-			const balance=recordsLastValue.balance
-			const balanceIntLength=separateThousands(balance).split(`.`)[0].length
-			terminalBacklogFeedback.push({tag:`table`,insert:`
-				<tr>
-					<td>${key}</td>
-					<td style="text-align:right;">$${separateThousands(balance).padEnd(balanceIntLength+3,`.00`)}</td>
-				</tr>
-			`})
+			try{
+				const recordsLastKey=Object.keys(value.records).pop()
+				const recordsLastValue=value.records[recordsLastKey]
+				const balance=recordsLastValue.balance
+				terminalBacklogFeedback.push({tag:`table`,insert:`
+					<tr>
+						<td>${key}</td>
+						<td style="text-align:right;">$${separateThousands(balance.toFixed(2))}</td>
+					</tr>
+				`})
+			}
+			catch{
+				terminalBacklogFeedback.push({tag:`table`,insert:`
+					<tr>
+						<td>${key}</td>
+						<td style="text-align:right;">$0.00</td>
+					</tr>
+				`})
+			}
 		}
 	}
 	catch{
@@ -173,7 +182,7 @@ commands.funds.update=function(account,balance,date){
 		}
 		terminalBacklogFeedback.push(`<p>Which account needs to be updated?`)
 		for(const account in data.funds){
-			terminalBacklogFeedback.push(`<p onclick="setInput('funds.update(${account},')">'${account}'`)
+			terminalBacklogFeedback.push(`<p class="insert-command" onclick="setInput('funds.update(${account},')">'${account}'`)
 		}
 		return
 	}
@@ -202,12 +211,24 @@ commands.funds.update=function(account,balance,date){
 		}
 	}
 	//	execution
-	balance=+balance
+	balance=parseFloat(balance)
 	data.funds[account].records[date||getDateToday()]={
 		balance
 	}
+	terminalBacklogFeedback.push(`<p>Account <span onclick="setInput('funds.update(${account},')">'${account}'</span></span> updated on date: ${date||getDateToday()} with balance: $${balance.toFixed(2)}`)
 	data.lastUpdated=getDateToday()
-	terminalBacklogFeedback.push(`<p>Account <span onclick="setInput('funds.update(${account},')">'${account}'</span></span> updated on date: ${date||getDateToday()} with balance: $${balance}`)
+}
+commands.funds.new=function(name){
+	if(name==undefined){
+		terminalBacklogFeedback.push(`<p>Cannot create account with no given name. <span class="insert-command" onclick="setInput('funds.new(')">Try again?`)
+		return
+	}
+	data.funds[name]={
+		records:{}
+	}
+	terminalBacklogFeedback.push(`<p>New account '${name}' created.`)
+	terminalBacklogFeedback.push(`<p>Update account <span class="insert-command" onclick="setInput('funds.update(${name},')">'${name}'</span> with an initial balance?`)
+	data.lastUpdated=getDateToday()
 }
 //	command auto-complete
 const commandsSuggestions=[]

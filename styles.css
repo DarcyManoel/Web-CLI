@@ -93,9 +93,6 @@ body{
 		p[onclick]{
 			margin-left:2.4em;
 			transition:.1s;
-			color:var(--interaction-color);
-			cursor:pointer;
-			user-select:none;
 		}
 		p[onclick]::before{
 			color:var(--text-color);
@@ -155,6 +152,11 @@ body{
 		.feedback-lost::selection{
 			background-color:var(--feedback-lost-selection-background);
 			color:var(--selection-color);
+		}
+		.insert-command{
+			color:var(--interaction-color);
+			cursor:pointer;
+			user-select:none;
 		}
 	}
 	#command{
